@@ -1,6 +1,6 @@
 {
   "name": "@digital-butlers/tabs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "description": "A convenient library with tabs for everyday tasks",
   "keywords": [
@@ -12,12 +12,12 @@
     "url": "https://github.com/DigitalButlersOrganization/DB-DigitalButlers-Tabs/issues",
     "email": "digitalbutlers.team@gmail.com"
   },
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.es.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     },
     "./css": "./dist/styles.css",
     "./css/min": "./dist/styles.min.css",
