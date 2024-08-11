@@ -46,7 +46,7 @@ var u;
 })(u || (u = {}));
 var g, f, L, v, A, p, m, T, I, E, w;
 class U {
-  constructor(t = '[data-tabs="wrapper"]', { tabbuttonsListSelector: e = '[data-tabs="tabs"]', tabpanelsListSelector: s = '[data-tabs="content"]', deletableTabs: a = !1, initialTab: l = 0, equalHeight: M = !1, orientation: x = "horizontal", triggerEvent: k = u.click, autoplay: S = {
+  constructor(t = '[data-tabs="wrapper"]', { tabbuttonsListSelector: e = '[data-tabs="tabs"]', tabpanelsListSelector: s = '[data-tabs="content"]', deletableTabs: a = !1, initialTab: l = 0, equalHeight: M = !1, orientation: k = "horizontal", triggerEvent: x = u.click, autoplay: S = {
     delay: 0
   }, on: D = {}, matchMediaRule: N }) {
     c(this, g, void 0);
@@ -238,7 +238,7 @@ class U {
     i(this, "destroy", () => {
       this.removeTabsAttributes(), this.removeListenersForTabs(), window.removeEventListener("resize", this.setEqualHeight), h(this, T, !0);
     });
-    h(this, g, s), h(this, f, e), h(this, L, a), this.tabsWrapper = typeof t == "string" ? document.querySelector(t) : t, this.tabButtonsList = void 0, this.tabPanelsList = void 0, this.tabButtonsList = void 0, this.tabs = [], this.panels = [], this.orientation = x === "vertical" ? "vertical" : "horizontal", this.triggerEvent = k, this.activeIndex = l, this.nextIndex = void 0, this.prevIndex = void 0, this.lastIndex = void 0, h(this, v, S), h(this, A, 0), h(this, p, !1), this.on = D, this.matchMediaRule = N, this.isInMatchMedia = !1, this.generatedId = H(), h(this, m, M), h(this, E, {
+    h(this, g, s), h(this, f, e), h(this, L, a), this.tabsWrapper = typeof t == "string" ? document.querySelector(t) : t, this.tabButtonsList = void 0, this.tabPanelsList = void 0, this.tabButtonsList = void 0, this.tabs = [], this.panels = [], this.orientation = k === "vertical" ? "vertical" : "horizontal", this.triggerEvent = x, this.activeIndex = l, this.nextIndex = void 0, this.prevIndex = void 0, this.lastIndex = void 0, h(this, v, S), h(this, A, 0), h(this, p, !1), this.on = D, this.matchMediaRule = N, this.isInMatchMedia = !1, this.generatedId = H(), h(this, m, M), h(this, E, {
       tab: "tab",
       tabpanel: "tabpanel"
     }), h(this, w, {
