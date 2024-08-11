@@ -1,6 +1,6 @@
 {
   "name": "@digital-butlers/tabs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "A convenient library with tabs for everyday tasks",
   "keywords": [
@@ -15,7 +15,8 @@
     "email": "digitalbutlers.team@gmail.com"
   },
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./styles": "./styles.css"
   },
   "scripts": {
     "dev": "vite --open",
@@ -25,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DigitalButlersOrganization/DB-digitalbutlers-components.git"
+    "url": "git+https://github.com/DigitalButlersOrganization/DB-digitalbutlers-tabs.git"
   },
   "license": "MIT",
   "private": false,
@@ -47,13 +48,10 @@
     "stylelint-scss": "^4.3.0",
     "stylelint-use-logical-spec": "^4.1.0",
     "typescript": "^4.9.4",
-    "vite-plugin-eslint": "^1.8.1"
-  },
-  "dependencies": {
+    "vite-plugin-eslint": "^1.8.1",
     "@rollup/plugin-typescript": "^11.1.6",
     "prettier": "^3.2.5",
     "rollup-plugin-smart-asset": "^2.1.2",
-    "rollup-plugin-visualizer": "^5.12.0",
     "vite": "^3.2.5"
   }
 }
