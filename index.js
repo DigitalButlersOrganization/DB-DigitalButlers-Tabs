@@ -1,6 +1,4 @@
-export {
-	Tabs,
-} from './dist/index.js';
+export * from './dist/index.js';
 
 // import { Tabs } from '../../dist/index';
 
