@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "description": "A convenient library with tabs for everyday tasks",
-  "keywords": [
-    "tabs"
-  ],
+  "keywords": ["tabs"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "homepage": "https://github.com/DigitalButlersOrganization/DB-DigitalButlers-Tabs#readme",
@@ -19,7 +17,7 @@
   },
   "scripts": {
     "dev": "vite --open",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node build-configuration.js",
     "preview": "vite preview",
     "post": "npm run build && npm publish --access public"
   },
