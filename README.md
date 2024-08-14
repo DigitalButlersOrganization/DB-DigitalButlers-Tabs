@@ -86,7 +86,7 @@ Tabs will not initialize, if quantity of buttons and content blocks are not equa
 ### `devMode`
 *Type:* `boolean`  
 *Default:* `false`  
-*Description:* Shows some errors and console logs about current tabs instanse state  
+*Description:* Shows unnecessary errors if something went wrong
 
 ### `autoplay`
 *Type:* `object`  

@@ -107,6 +107,12 @@ export class Tabs {
 	}
 
 	init() {
+		if (this.devMode) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				`Tabs dev mode enabled! Instance ID: ${this.generatedId} | В табах включен режим разработчика! ID экземпляра: ${this.generatedId}`,
+			);
+		}
 		if (this.tabsWrapper && !this.#destroyed) {
 			if (this.on.beforeInit) {
 				this.on.beforeInit(this);
@@ -136,11 +142,11 @@ export class Tabs {
 					}
 				} else if (this.devMode) {
 					throw new Error(
-						`Tabs and panels should have the length > 0. And their lengths should be equal. Tabs number is: ${this.tabs.length}, panels number is: ${this.panels.length}`,
+						`Tabs and panels should have the length > 0. And their lengths should be equal. Tabs number is: ${this.tabs.length}, panels number is: ${this.panels.length} | Табы и панели должны иметь равное количество элементов. Количество табов: ${this.tabs.length}, количество панелей: ${this.panels.length}`,
 					);
 				}
 			} else if (this.devMode) {
-				throw new Error('Tabs or panels not found');
+				throw new Error('Tabs or panels not found | Табы или панели не найдены');
 			}
 			this.#inited = true;
 			if (this.isInMatchMedia) {
@@ -154,10 +160,10 @@ export class Tabs {
 			}
 		} else if (!this.tabsWrapper) {
 			if (this.devMode) {
-				throw new Error(`Tabs wrapper not found`);
+				throw new Error(`Tabs wrapper not found | Обертка табов не найдена`);
 			}
 		} else if (this.#destroyed && this.devMode) {
-			throw new Error(`Tabs already destroyed`);
+			throw new Error(`Tabs already destroyed | Табы уже были дестроены`);
 		}
 	}
 
@@ -206,7 +212,9 @@ export class Tabs {
 			this.triggerEvent = eventName;
 			this.addListenersForTabs();
 		} else if (this.devMode) {
-			throw new Error(`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')}`);
+			throw new Error(
+				`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')} | Некорректный тип события. Правильные типы: ${Object.values(TriggerEvents).join(', ')}`,
+			);
 		}
 	};
 
