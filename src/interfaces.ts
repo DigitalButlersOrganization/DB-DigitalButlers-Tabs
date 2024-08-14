@@ -2,48 +2,48 @@
 
 import { Tabs } from '.';
 
-export type OrientationType = 'horizontal' | 'vertical'
+export type OrientationType = 'horizontal' | 'vertical';
 
 export interface AutoPlayModel {
-	delay: number,
+	delay: number;
 }
 
 export interface EventsModel {
 	// eslint-disable-next-line no-unused-vars
-	tabChange?: (tabs: Tabs) => void,
+	tabChange?: (tabs: Tabs) => void;
 	// eslint-disable-next-line no-unused-vars
-	beforeInit?: (tabs: Tabs) => void,
+	beforeInit?: (tabs: Tabs) => void;
 	// eslint-disable-next-line no-unused-vars
-	afterInit?: (tabs: Tabs) => void,
+	afterInit?: (tabs: Tabs) => void;
 }
 
 // eslint-disable-next-line no-shadow
 export enum TriggerEvents {
 	click = 'click',
-	mouseover = 'mouseover'
+	mouseover = 'mouseover',
 }
 
 export interface TabsConfigModel {
-	tabpanelsListSelector: string,
-	tabbuttonsListSelector: string,
-	deletableTabs: boolean,
-	initialTab: number,
-	orientation: OrientationType,
-	equalHeight: boolean,
-	autoplay: AutoPlayModel,
-	triggerEvent: TriggerEvents,
-	on: EventsModel,
-	matchMediaRule?: string,
+	tabpanelsListSelector?: string;
+	tabbuttonsListSelector?: string;
+	deletableTabs?: boolean;
+	initialTab?: number;
+	orientation?: OrientationType;
+	equalHeight?: boolean;
+	autoplay?: AutoPlayModel;
+	triggerEvent?: TriggerEvents;
+	on?: EventsModel;
+	matchMediaRule?: string;
+	devMode?: boolean;
 }
 
 export interface EventDetailsModel {
-	target: HTMLElement,
-	targetButton: HTMLElement,
-	targetIndex: number | undefined,
-	key: string | undefined,
-	event: KeyboardEvent | MouseEvent
+	target: HTMLElement;
+	targetButton: HTMLElement;
+	targetIndex: number | undefined;
+	key: string | undefined;
+	event: KeyboardEvent | MouseEvent;
 }
-
 
 export interface TabsModel {
 	tabpanelsListSelector: string;
@@ -67,13 +67,11 @@ export interface TabsModel {
 	panels: HTMLElement[];
 	on: EventsModel;
 	defaultRoles: {
-		[key: string]: string
+		[key: string]: string;
 	};
 	defaultSelectors: {
-		[key: string]: `[role="${string}"]`
+		[key: string]: `[role="${string}"]`;
 	};
 	matchMediaRule: string;
 	isInMatchMedia: boolean;
 }
-
-

@@ -83,6 +83,11 @@ Tabs will not initialize, if quantity of buttons and content blocks are not equa
 *Default:* `undefined`  
 *Description:* will prevent the tab changings if window.matchmedia doesn't match  
 
+### `devMode`
+*Type:* `boolean`  
+*Default:* `false`  
+*Description:* Shows some errors and console logs about current tabs instanse state  
+
 ### `autoplay`
 *Type:* `object`  
 

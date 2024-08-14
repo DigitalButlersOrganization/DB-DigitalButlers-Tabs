@@ -1,9 +1,15 @@
 import { CLASSES, KEYS } from './constants/index';
-import { CUSTOM_CLASSES } from './custom-classes';
+
+import './style.scss';
 
 import { getChildrenArray, getRandomId } from './utils/index';
 import {
-	AutoPlayModel, EventDetailsModel, EventsModel, OrientationType, TabsConfigModel, TriggerEvents,
+	AutoPlayModel,
+	EventDetailsModel,
+	EventsModel,
+	OrientationType,
+	TabsConfigModel,
+	TriggerEvents,
 } from './interfaces';
 
 export class Tabs {
@@ -17,8 +23,8 @@ export class Tabs {
 	orientation: OrientationType;
 	triggerEvent: TriggerEvents;
 	#autoplay: AutoPlayModel;
-	#autoplayTimeout: number;
-	#listenersAdded: boolean;
+	#autoplayTimeout: number; 
+	#listenersAdded: boolean; 
 	// #maxPanelHeight: number;
 	generatedId: string;
 	#equalHeight: boolean;
@@ -31,18 +37,20 @@ export class Tabs {
 	#destroyed: boolean;
 	#inited: boolean;
 	#defaultRoles: {
-		[key: string]: string
+		[key: string]: string;
 	};
 
 	#defaultSelectors: {
-		[key: string]: `[role="${string}"]`
+		[key: string]: `[role="${string}"]`;
 	};
 
 	matchMediaRule: string | undefined;
 	isInMatchMedia: boolean;
+	devMode: boolean;
 
 	// eslint-disable-next-line default-param-last
-	constructor(tabsWrapper: string | HTMLElement = '[data-tabs="wrapper"]',
+	constructor(
+		tabsWrapper: string | HTMLElement = '[data-tabs="wrapper"]',
 		{
 			tabbuttonsListSelector = '[data-tabs="tabs"]',
 			tabpanelsListSelector = '[data-tabs="content"]',
@@ -56,13 +64,14 @@ export class Tabs {
 			},
 			on = {},
 			matchMediaRule,
-		}: TabsConfigModel) {
+			devMode: developmentMode = false,
+		}: TabsConfigModel,
+	) {
 		this.#tabpanelsListSelector = tabpanelsListSelector;
 		this.#tabbuttonsListSelector = tabbuttonsListSelector;
 		this.#deletableTabs = deletableTabs;
-		this.tabsWrapper = typeof tabsWrapper === 'string'
-			? document.querySelector(tabsWrapper) as HTMLElement
-			: tabsWrapper;
+		this.tabsWrapper =
+			typeof tabsWrapper === 'string' ? (document.querySelector(tabsWrapper) as HTMLElement) : tabsWrapper;
 		this.tabButtonsList = undefined;
 		this.tabPanelsList = undefined;
 		this.tabButtonsList = undefined;
@@ -93,6 +102,7 @@ export class Tabs {
 		};
 		this.#destroyed = false;
 		this.#inited = false;
+		this.devMode = developmentMode;
 		this.init();
 	}
 
@@ -101,14 +111,16 @@ export class Tabs {
 			if (this.on.beforeInit) {
 				this.on.beforeInit(this);
 			}
-			this.checkMatchMedia();
-			window.addEventListener('resize', this.checkMatchMedia);
-			window.addEventListener('resize', this.update);
 			this.tabButtonsList = this.tabsWrapper.querySelector(this.#tabbuttonsListSelector) as HTMLElement;
 			this.tabPanelsList = this.tabsWrapper.querySelector(this.#tabpanelsListSelector) as HTMLElement;
 			if (this.tabButtonsList && this.tabPanelsList) {
-				this.update();
+				this.defineTabsAndPanels();
+
 				if (this.tabs.length > 0 && this.tabs.length === this.panels.length) {
+					this.checkMatchMediaRule();
+					window.addEventListener('resize', this.updateAttributes);
+					this.updateAttributes();
+
 					if (this.#equalHeight) {
 						this.setEqualHeight();
 						window.addEventListener('resize', this.setEqualHeight);
@@ -122,10 +134,12 @@ export class Tabs {
 					if (this.#autoplay.delay > 0 && this.isInMatchMedia) {
 						this.runAutoPlay();
 					}
-				} else {
-					throw new Error('Tabs and panels should have the length > 0. And their lengths should be equal');
+				} else if (this.devMode) {
+					throw new Error(
+						`Tabs and panels should have the length > 0. And their lengths should be equal. Tabs number is: ${this.tabs.length}, panels number is: ${this.panels.length}`,
+					);
 				}
-			} else {
+			} else if (this.devMode) {
 				throw new Error('Tabs or panels not found');
 			}
 			this.#inited = true;
@@ -138,16 +152,17 @@ export class Tabs {
 			if (this.on.afterInit) {
 				this.on.afterInit(this);
 			}
+		} else if (!this.tabsWrapper) {
+			if (this.devMode) {
+				throw new Error(`Tabs wrapper not found`);
+			}
+		} else if (this.#destroyed && this.devMode) {
+			throw new Error(`Tabs already destroyed`);
 		}
 	}
 
-	private checkMatchMedia = () => {
-		this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
-	};
-
 	private setEqualHeight = () => {
 		this.panels.forEach((element) => {
-			// console.log(element.style);
 			element.style.height = 'auto';
 		});
 		const maxHeight = Math.max(...this.panels.map((element) => element.offsetHeight));
@@ -157,7 +172,7 @@ export class Tabs {
 	};
 
 	public goTo = (index: number, setFocus: boolean = true) => {
-		if (this.#inited) {
+		if (this.#inited) {                         
 			this.activeIndex = index;
 			this.updateProperties();
 			this.setUnactiveAll();
@@ -170,6 +185,11 @@ export class Tabs {
 			if (this.on.tabChange) {
 				this.on.tabChange(this);
 			}
+			if (this.devMode) {
+				console.log(
+					`Active tab: ${this.activeIndex}. Next tab: ${this.nextIndex}. Previous tab: ${this.prevIndex}. Last tab: ${this.lastIndex}. Id: ${this.generatedId}`,
+				);
+			}  
 		}
 	};
 
@@ -190,9 +210,8 @@ export class Tabs {
 			this.removeListenersForTabs();
 			this.triggerEvent = eventName;
 			this.addListenersForTabs();
-		} else {
-			// eslint-disable-next-line no-console
-			console.error('Icorrect type of event');
+		} else if (this.devMode) {
+			console.error(`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')}`);
 		}
 	};
 
@@ -210,7 +229,7 @@ export class Tabs {
 
 	private removeListenersForTabs = () => {
 		this.tabsWrapper.removeEventListener(this.triggerEvent, this.clickHandler);
-		window.removeEventListener('keydown', this.keydownHandler);
+		window.removeEventListener('keydown', this.keydownHandler); 
 	};
 
 	private clickHandler = (event: MouseEvent) => {
@@ -230,51 +249,50 @@ export class Tabs {
 			if (targetButton && targetIndex !== undefined && this.tabs.includes(targetButton)) {
 				this.stopAutoPlay();
 				switch (key) {
-				case KEYS.LEFT:
-				case KEYS.RIGHT: {
-					event.preventDefault();
-					if (this.orientation === 'horizontal') {
-						this.switchTabOnArrowPress(eventDetails);
+					case KEYS.LEFT:
+					case KEYS.RIGHT: {
+						event.preventDefault();
+						if (this.orientation === 'horizontal') {
+							this.switchTabOnArrowPress(eventDetails);
+						}
+						break;
 					}
-					break;
-				}
-				case KEYS.UP:
-				case KEYS.DOWN: {
-					event.preventDefault(); // prevent page scroll
-					if (this.orientation === 'vertical') {
-						this.switchTabOnArrowPress(eventDetails);
+					case KEYS.UP:
+					case KEYS.DOWN: {
+						event.preventDefault(); // prevent page scroll
+						if (this.orientation === 'vertical') {
+							this.switchTabOnArrowPress(eventDetails);
+						}
+						break;
 					}
-					break;
-				}
-				case KEYS.DELETE: {
-					event.preventDefault();
-					this.deleteTab(eventDetails);
-					break;
-				}
-				case KEYS.ENTER: {
-					event.preventDefault();
-					this.goTo(+targetIndex);
-					break;
-				}
-				case KEYS.SPACE: {
-					event.preventDefault();
-					targetButton.click();
-					// this.goTo(+targetIndex);
-					break;
-				}
-				case KEYS.END: {
-					event.preventDefault(); // prevent page scroll
-					this.focusTab(this.lastIndex as number);
-					break;
-				}
-				case KEYS.HOME: {
-					event.preventDefault(); // prevent page scroll
-					this.focusTab(0);
-					break;
-				}
-				default: {
-					break;
-				}
+					case KEYS.DELETE: {
+						event.preventDefault();
+						this.deleteTab(eventDetails);
+						break;
+					}
+					case KEYS.ENTER: {
+						event.preventDefault();
+						this.goTo(+targetIndex);
+						break;
+					}
+					case KEYS.SPACE: {
+						event.preventDefault();
+						targetButton.click();
+						break;
+					}
+					case KEYS.END: {
+						event.preventDefault(); // prevent page scroll
+						this.focusTab(this.lastIndex as number);
+						break;
+					}
+					case KEYS.HOME: {
+						event.preventDefault(); // prevent page scroll
+						this.focusTab(0);
+						break;
+					}
+					default: {
+						break;
+					}
 				}
 			}
 		}
@@ -321,37 +339,35 @@ export class Tabs {
 		const { key, targetIndex, event } = eventDetails;
 		event.preventDefault();
 		switch (key) {
-		case KEYS.LEFT:
-		case KEYS.UP: {
-			if (targetIndex !== undefined) {
-				const nextIndex = targetIndex - 1 < 0
-					? (Number(this.lastIndex)) : targetIndex - 1;
-				// this.focusTab(nextIndex);
-				if (this.triggerEvent === TriggerEvents.mouseover) {
-					this.goTo(nextIndex);
-				} else {
-					this.focusTab(nextIndex);
+			case KEYS.LEFT:
+			case KEYS.UP: {
+				if (targetIndex !== undefined) {
+					const nextIndex = targetIndex - 1 < 0 ? Number(this.lastIndex) : targetIndex - 1;
+					// this.focusTab(nextIndex);
+					if (this.triggerEvent === TriggerEvents.mouseover) {
+						this.goTo(nextIndex);
+					} else {
+						this.focusTab(nextIndex);
+					}
 				}
+				break;
 			}
-			break;
-		}
-		case KEYS.RIGHT:
-		case KEYS.DOWN: {
-			if (targetIndex !== undefined) {
-				const nextIndex = targetIndex >= (Number(this.lastIndex))
-					? 0 : targetIndex + 1;
-				// this.focusTab(nextIndex);
-				if (this.triggerEvent === TriggerEvents.mouseover) {
-					this.goTo(nextIndex);
-				} else {
-					this.focusTab(nextIndex);
+			case KEYS.RIGHT:
+			case KEYS.DOWN: {
+				if (targetIndex !== undefined) {
+					const nextIndex = targetIndex >= Number(this.lastIndex) ? 0 : targetIndex + 1;
+					// this.focusTab(nextIndex);
+					if (this.triggerEvent === TriggerEvents.mouseover) {
+						this.goTo(nextIndex);
+					} else {
+						this.focusTab(nextIndex);
+					}
 				}
+				break;
 			}
-			break;
-		}
-		default: {
-			break;
-		}
+			default: {
+				break;
+			}
 		}
 	};
 
@@ -374,19 +390,19 @@ export class Tabs {
 	};
 
 	private assignTabsAttributes = () => {
-		this.tabsWrapper.classList.add(CUSTOM_CLASSES.TABS_WRAPPER);
+		this.tabsWrapper.classList.add(CLASSES.TABS_WRAPPER);
 		this.tabsWrapper.setAttribute('aria-orientation', this.orientation);
-		this.tabButtonsList?.classList.add(CUSTOM_CLASSES.TAB_LIST);
-		this.tabPanelsList?.classList.add(CUSTOM_CLASSES.PANEL_LIST);
+		this.tabButtonsList?.classList.add(CLASSES.TAB_LIST);
+		this.tabPanelsList?.classList.add(CLASSES.PANEL_LIST);
 		this.tabs.forEach((tab, index) => {
-			tab.classList.add(CUSTOM_CLASSES.TAB);
+			tab.classList.add(CLASSES.TAB);
 			tab.setAttribute('aria-label', `${index}`);
 			tab.setAttribute('role', this.#defaultRoles.tab);
 			tab.setAttribute('id', `${this.generatedId}-tab-${index}`);
 			tab.setAttribute('aria-controls', `${this.generatedId}-tabpanel-${index}`);
 
 			tab.dataset.deletable = `${this.#deletableTabs}`;
-			this.panels[index].classList.add(CUSTOM_CLASSES.PANEL);
+			this.panels[index].classList.add(CLASSES.PANEL);
 			this.panels[index].setAttribute('aria-labelledby', `${this.generatedId}-tab-${index}`);
 			this.panels[index].setAttribute('id', `${this.generatedId}-tabpanel-${index}`);
 			this.panels[index].setAttribute('aria-label', `${index}`);
@@ -396,12 +412,12 @@ export class Tabs {
 	};
 
 	private removeTabsAttributes = () => {
-		this.tabsWrapper.classList.remove(CUSTOM_CLASSES.TABS_WRAPPER);
+		this.tabsWrapper.classList.remove(CLASSES.TABS_WRAPPER);
 		this.tabsWrapper.removeAttribute('aria-orientation');
-		this.tabButtonsList?.classList.remove(CUSTOM_CLASSES.TAB_LIST);
-		this.tabPanelsList?.classList.remove(CUSTOM_CLASSES.PANEL_LIST);
+		this.tabButtonsList?.classList.remove(CLASSES.TAB_LIST);
+		this.tabPanelsList?.classList.remove(CLASSES.PANEL_LIST);
 		this.tabs.forEach((tab, index) => {
-			tab.classList.remove(CUSTOM_CLASSES.TAB);
+			tab.classList.remove(CLASSES.TAB);
 			tab.classList.remove(CLASSES.ACTIVE);
 			tab.classList.remove(CLASSES.UNACTIVE);
 			tab.removeAttribute('tabindex');
@@ -412,7 +428,7 @@ export class Tabs {
 			tab.removeAttribute('aria-controls');
 
 			delete tab.dataset.deletable;
-			this.panels[index].classList.remove(CUSTOM_CLASSES.PANEL);
+			this.panels[index].classList.remove(CLASSES.PANEL);
 			this.panels[index].classList.remove(CLASSES.ACTIVE);
 			this.panels[index].classList.remove(CLASSES.UNACTIVE);
 			this.panels[index].removeAttribute('aria-labelledby');
@@ -437,24 +453,34 @@ export class Tabs {
 		};
 	};
 
-
 	private updateProperties = (): void => {
 		this.lastIndex = this.tabs.length - 1;
-		this.nextIndex = (this.activeIndex >= this.lastIndex)
-			? 0 : this.activeIndex + 1;
-		this.prevIndex = (this.activeIndex - 1 < 0
-			? this.lastIndex : this.activeIndex - 1);
+		this.nextIndex = this.activeIndex >= this.lastIndex ? 0 : this.activeIndex + 1;
+		this.prevIndex = this.activeIndex - 1 < 0 ? this.lastIndex : this.activeIndex - 1;
 	};
 
-	public update = () => {
-		this.tabs = getChildrenArray(this.tabButtonsList as HTMLElement);
-		this.panels = getChildrenArray(this.tabPanelsList as HTMLElement);
+	private updateAttributes = (): void => {
 		if (this.isInMatchMedia) {
 			this.assignTabsAttributes();
 			this.goTo(this.activeIndex, false);
 		} else {
 			this.removeTabsAttributes();
 		}
+	};
+
+	private defineTabsAndPanels = () => {
+		this.tabs = getChildrenArray(this.tabButtonsList as HTMLElement);
+		this.panels = getChildrenArray(this.tabPanelsList as HTMLElement);
+	};
+
+	private checkMatchMediaRule = () => {
+		this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
+	}
+
+	public update = () => {
+		this.checkMatchMediaRule();
+		this.defineTabsAndPanels();
+		this.updateAttributes();
 	};
 
 	public destroy = () => {
@@ -464,4 +490,3 @@ export class Tabs {
 		this.#destroyed = true;
 	};
 }
-
