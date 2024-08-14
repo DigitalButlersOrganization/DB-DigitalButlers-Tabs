@@ -23,8 +23,8 @@ export class Tabs {
 	orientation: OrientationType;
 	triggerEvent: TriggerEvents;
 	#autoplay: AutoPlayModel;
-	#autoplayTimeout: number; 
-	#listenersAdded: boolean; 
+	#autoplayTimeout: number;
+	#listenersAdded: boolean;
 	// #maxPanelHeight: number;
 	generatedId: string;
 	#equalHeight: boolean;
@@ -172,7 +172,7 @@ export class Tabs {
 	};
 
 	public goTo = (index: number, setFocus: boolean = true) => {
-		if (this.#inited) {                         
+		if (this.#inited) {
 			this.activeIndex = index;
 			this.updateProperties();
 			this.setUnactiveAll();
@@ -185,11 +185,6 @@ export class Tabs {
 			if (this.on.tabChange) {
 				this.on.tabChange(this);
 			}
-			if (this.devMode) {
-				console.log(
-					`Active tab: ${this.activeIndex}. Next tab: ${this.nextIndex}. Previous tab: ${this.prevIndex}. Last tab: ${this.lastIndex}. Id: ${this.generatedId}`,
-				);
-			}  
 		}
 	};
 
@@ -211,7 +206,7 @@ export class Tabs {
 			this.triggerEvent = eventName;
 			this.addListenersForTabs();
 		} else if (this.devMode) {
-			console.error(`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')}`);
+			throw new Error(`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')}`);
 		}
 	};
 
@@ -229,7 +224,7 @@ export class Tabs {
 
 	private removeListenersForTabs = () => {
 		this.tabsWrapper.removeEventListener(this.triggerEvent, this.clickHandler);
-		window.removeEventListener('keydown', this.keydownHandler); 
+		window.removeEventListener('keydown', this.keydownHandler);
 	};
 
 	private clickHandler = (event: MouseEvent) => {
@@ -475,7 +470,7 @@ export class Tabs {
 
 	private checkMatchMediaRule = () => {
 		this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
-	}
+	};
 
 	public update = () => {
 		this.checkMatchMediaRule();

@@ -1,6 +1,4 @@
-// import rules from './eslint-rules/';
-
-export default {
+module.exports = {
 	env: {
 		browser: true,
 		es2021: true,
@@ -19,7 +17,7 @@ export default {
 		'linebreak-style': 0,
 		'no-param-reassign': 0,
 		'no-multiple-empty-lines': [1, { max: 2 }],
-		indent: [1, 'tab'],
+		indent: [1, 'tab', { SwitchCase: 1 }],
 		'no-tabs': [1, { allowIndentationTabs: true }],
 		'max-len': [
 			1,
@@ -32,7 +30,6 @@ export default {
 			},
 		],
 		'function-paren-newline': 0,
-		// 'function-paren-newline': [1, { minItems: 3 }],
 		'import/extensions': 0,
 		'import/prefer-default-export': 0,
 		'unicorn/no-for-loop': 0,
@@ -41,8 +38,6 @@ export default {
 		'unicorn/expiring-todo-comments': 0,
 		'lines-between-class-members': [1, 'always', { exceptAfterSingleLine: true }],
 		'default-param-last': 0,
-		// 'no-console-outside-dev-mode': 1,
-		// 'function-paren-newline': 0,
 	},
 	settings: {
 		'import/resolver': {
