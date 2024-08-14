@@ -6,7 +6,6 @@ import typescript from '@rollup/plugin-typescript';
 
 export default defineConfig({
 	build: {
-		watch: {},
 		lib: {
 			entry: ['./src/index.ts'],
 			name: 'DigitaButlers-Tabs',
