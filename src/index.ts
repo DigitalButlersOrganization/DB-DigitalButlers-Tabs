@@ -168,13 +168,15 @@ export class Tabs {
 	}
 
 	private setEqualHeight = () => {
-		this.panels.forEach((element) => {
-			element.style.height = 'auto';
-		});
-		const maxHeight = Math.max(...this.panels.map((element) => element.offsetHeight));
-		this.panels.forEach((element) => {
-			element.style.height = `${maxHeight}px`;
-		});
+		if (this.isInMatchMedia) {
+			this.panels.forEach((element) => {
+				element.style.height = 'auto';
+			});
+			const maxHeight = Math.max(...this.panels.map((element) => element.offsetHeight));
+			this.panels.forEach((element) => {
+				element.style.height = `${maxHeight}px`;
+			});
+		}
 	};
 
 	public goTo = (index: number, setFocus: boolean = true) => {
@@ -439,6 +441,16 @@ export class Tabs {
 			this.panels[index].removeAttribute('aria-label');
 			this.panels[index].removeAttribute('role');
 			this.panels[index].removeAttribute('inert');
+			if (this.#equalHeight) {
+				const currentStyle = this.panels[index].getAttribute('style');
+				if (currentStyle) {
+					let styles = currentStyle.split(';').filter((s) => s.trim() !== '');
+					styles = styles.filter((style) => !style.trim().toLowerCase().startsWith('height:'));
+					const newStyle = styles.join(';');
+					this.panels[index].setAttribute('style', newStyle);
+				}
+				this.panels[index].removeAttribute('style');
+			}
 		});
 	};
 
@@ -463,6 +475,7 @@ export class Tabs {
 	};
 
 	private updateAttributes = (): void => {
+		this.checkMatchMediaRule();
 		if (this.isInMatchMedia) {
 			this.assignTabsAttributes();
 			this.goTo(this.activeIndex, false);

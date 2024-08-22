@@ -19,6 +19,7 @@ const mainTabs = new Tabs('.app', {
 	orientation: 'vertical',
 	deletableTabs: true,
 	matchMediaRule: '(min-width: 600px)',
+	equalHeight: true,
 	autoplay: {
 		delay: 0,
 	},
