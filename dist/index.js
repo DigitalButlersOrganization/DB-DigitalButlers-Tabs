@@ -41,7 +41,7 @@ var c;
 (function(u) {
   u.click = "click", u.mouseover = "mouseover";
 })(c || (c = {}));
-var L, m, w, v, A, p, E, b, f, g, B;
+var L, m, w, v, A, p, E, b, g, f, B;
 class $ {
   constructor(t = '[data-tabs="wrapper"]', { tabbuttonsListSelector: e = '[data-tabs="tabs"]', tabpanelsListSelector: s = '[data-tabs="content"]', deletableTabs: a = !1, initialTab: o = 0, equalHeight: T = !1, orientation: y = "horizontal", triggerEvent: I = c.click, autoplay: P = {
     delay: 0
@@ -67,8 +67,8 @@ class $ {
     i(this, "panels");
     i(this, "on");
     d(this, b, void 0);
-    d(this, f, void 0);
     d(this, g, void 0);
+    d(this, f, void 0);
     d(this, B, void 0);
     i(this, "matchMediaRule");
     i(this, "isInMatchMedia");
@@ -85,7 +85,7 @@ class $ {
       }
     });
     i(this, "goTo", (t, e = !0) => {
-      h(this, f) && (this.activeIndex = t, this.updateProperties(), this.setUnactiveAll(), this.setActiveAttributes(t), this.setActiveClasses(t), e && this.focusTab(t), this.on.tabChange && this.on.tabChange(this));
+      h(this, g) && (this.activeIndex = t, this.updateProperties(), this.setUnactiveAll(), this.setActiveAttributes(t), this.setActiveClasses(t), e && this.focusTab(t), this.on.tabChange && this.on.tabChange(this));
     });
     i(this, "goToNext", () => {
       this.goTo(this.nextIndex);
@@ -210,7 +210,7 @@ class $ {
     i(this, "assignTabsAttributes", () => {
       var t, e;
       this.tabsWrapper.classList.add(r.TABS_WRAPPER), this.tabsWrapper.setAttribute("aria-orientation", this.orientation), (t = this.tabButtonsList) == null || t.classList.add(r.TAB_LIST), (e = this.tabPanelsList) == null || e.classList.add(r.PANEL_LIST), this.tabs.forEach((s, a) => {
-        s.classList.add(r.TAB), s.setAttribute("aria-label", `${a}`), s.setAttribute("role", h(this, g).tab), s.setAttribute("id", `${this.generatedId}-tab-${a}`), s.setAttribute("aria-controls", `${this.generatedId}-tabpanel-${a}`), s.dataset.deletable = `${h(this, w)}`, this.panels[a].classList.add(r.PANEL), this.panels[a].setAttribute("aria-labelledby", `${this.generatedId}-tab-${a}`), this.panels[a].setAttribute("id", `${this.generatedId}-tabpanel-${a}`), this.panels[a].setAttribute("aria-label", `${a}`), this.panels[a].setAttribute("role", h(this, g).tabpanel);
+        s.classList.add(r.TAB), s.setAttribute("aria-label", `${a}`), s.setAttribute("role", h(this, f).tab), s.setAttribute("id", `${this.generatedId}-tab-${a}`), s.setAttribute("aria-controls", `${this.generatedId}-tabpanel-${a}`), s.dataset.deletable = `${h(this, w)}`, this.panels[a].classList.add(r.PANEL), this.panels[a].setAttribute("aria-labelledby", `${this.generatedId}-tab-${a}`), this.panels[a].setAttribute("id", `${this.generatedId}-tabpanel-${a}`), this.panels[a].setAttribute("aria-label", `${a}`), this.panels[a].setAttribute("role", h(this, f).tabpanel);
       }), this.setUnactiveAll();
     });
     i(this, "removeTabsAttributes", () => {
@@ -256,16 +256,16 @@ class $ {
     i(this, "destroy", () => {
       this.removeTabsAttributes(), this.removeListenersForTabs(), window.removeEventListener("resize", this.setEqualHeight), n(this, b, !0);
     });
-    n(this, L, s), n(this, m, e), n(this, w, a), this.tabsWrapper = typeof t == "string" ? document.querySelector(t) : t, this.tabButtonsList = void 0, this.tabPanelsList = void 0, this.tabButtonsList = void 0, this.tabs = [], this.panels = [], this.orientation = y === "vertical" ? "vertical" : "horizontal", this.triggerEvent = I, this.activeIndex = o, this.nextIndex = void 0, this.prevIndex = void 0, this.lastIndex = void 0, n(this, v, P), n(this, A, 0), n(this, p, !1), this.on = k, this.matchMediaRule = C, this.isInMatchMedia = !1, this.generatedId = N(), n(this, E, T), n(this, g, {
+    n(this, L, s), n(this, m, e), n(this, w, a), this.tabsWrapper = typeof t == "string" ? document.querySelector(t) : t, this.tabButtonsList = void 0, this.tabPanelsList = void 0, this.tabButtonsList = void 0, this.tabs = [], this.panels = [], this.orientation = y === "vertical" ? "vertical" : "horizontal", this.triggerEvent = I, this.activeIndex = o, this.nextIndex = void 0, this.prevIndex = void 0, this.lastIndex = void 0, n(this, v, P), n(this, A, 0), n(this, p, !1), this.on = k, this.matchMediaRule = C, this.isInMatchMedia = !1, this.generatedId = N(), n(this, E, T), n(this, f, {
       tab: "tab",
       tabpanel: "tabpanel"
     }), n(this, B, {
       tab: '[role="tab"]',
       tabpanel: '[role="tabpanel"]'
-    }), n(this, b, !1), n(this, f, !1), this.devMode = x, this.init();
+    }), n(this, b, !1), n(this, g, !1), this.devMode = x, this.init();
   }
   init() {
-    if (this.devMode && console.warn(`Tabs dev mode enabled! Instance ID: ${this.generatedId} | \u0412 \u0442\u0430\u0431\u0430\u0445 \u0432\u043A\u043B\u044E\u0447\u0435\u043D \u0440\u0435\u0436\u0438\u043C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A\u0430! ID \u044D\u043A\u0437\u0435\u043C\u043F\u043B\u044F\u0440\u0430: ${this.generatedId}`), this.tabsWrapper && !h(this, b)) {
+    if (this.devMode && console.warn(`Tabs dev mode enabled! Instance ID: ${this.generatedId}. Read the docs https://www.npmjs.com/package/@digital-butlers/tabs | \u0412 \u0442\u0430\u0431\u0430\u0445 \u0432\u043A\u043B\u044E\u0447\u0435\u043D \u0440\u0435\u0436\u0438\u043C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A\u0430! ID \u044D\u043A\u0437\u0435\u043C\u043F\u043B\u044F\u0440\u0430: ${this.generatedId}. \u0427\u0438\u0442\u0430\u0439 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u0446\u0438\u044E https://www.npmjs.com/package/@digital-butlers/tabs`), this.tabsWrapper && !h(this, b)) {
       if (this.on.beforeInit && this.on.beforeInit(this), this.tabButtonsList = this.tabsWrapper.querySelector(h(this, m)), this.tabPanelsList = this.tabsWrapper.querySelector(h(this, L)), this.tabButtonsList && this.tabPanelsList) {
         if (this.defineTabsAndPanels(), this.tabs.length > 0 && this.tabs.length === this.panels.length)
           this.checkMatchMediaRule(), window.addEventListener("resize", this.updateAttributes), this.updateAttributes(), h(this, E) && (this.setEqualHeight(), window.addEventListener("resize", this.setEqualHeight)), h(this, p) || (this.addListenersForTabs(), n(this, p, !0)), h(this, v).delay > 0 && this.isInMatchMedia && this.runAutoPlay();
@@ -273,7 +273,7 @@ class $ {
           throw new Error(`Tabs and panels should have the length > 0. And their lengths should be equal. Tabs number is: ${this.tabs.length}, panels number is: ${this.panels.length} | \u0422\u0430\u0431\u044B \u0438 \u043F\u0430\u043D\u0435\u043B\u0438 \u0434\u043E\u043B\u0436\u043D\u044B \u0438\u043C\u0435\u0442\u044C \u0440\u0430\u0432\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432. \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u0430\u0431\u043E\u0432: ${this.tabs.length}, \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043F\u0430\u043D\u0435\u043B\u0435\u0438\u0306: ${this.panels.length}`);
       } else if (this.devMode)
         throw new Error("Tabs or panels not found | \u0422\u0430\u0431\u044B \u0438\u043B\u0438 \u043F\u0430\u043D\u0435\u043B\u0438 \u043D\u0435 \u043D\u0430\u0438\u0306\u0434\u0435\u043D\u044B");
-      n(this, f, !0), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes(), this.on.afterInit && this.on.afterInit(this);
+      n(this, g, !0), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes(), this.on.afterInit && this.on.afterInit(this);
     } else if (this.tabsWrapper) {
       if (h(this, b) && this.devMode)
         throw new Error("Tabs already destroyed | \u0422\u0430\u0431\u044B \u0443\u0436\u0435 \u0431\u044B\u043B\u0438 \u0434\u0435\u0441\u0442\u0440\u043E\u0435\u043D\u044B");
@@ -281,7 +281,7 @@ class $ {
       throw new Error("Tabs wrapper not found | \u041E\u0431\u0435\u0440\u0442\u043A\u0430 \u0442\u0430\u0431\u043E\u0432 \u043D\u0435 \u043D\u0430\u0438\u0306\u0434\u0435\u043D\u0430");
   }
 }
-L = new WeakMap(), m = new WeakMap(), w = new WeakMap(), v = new WeakMap(), A = new WeakMap(), p = new WeakMap(), E = new WeakMap(), b = new WeakMap(), f = new WeakMap(), g = new WeakMap(), B = new WeakMap();
+L = new WeakMap(), m = new WeakMap(), w = new WeakMap(), v = new WeakMap(), A = new WeakMap(), p = new WeakMap(), E = new WeakMap(), b = new WeakMap(), g = new WeakMap(), f = new WeakMap(), B = new WeakMap();
 export {
   $ as Tabs
 };

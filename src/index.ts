@@ -119,10 +119,10 @@ export class Tabs {
 			}
 			this.tabButtonsList = this.tabsWrapper.querySelector(this.#tabbuttonsListSelector) as HTMLElement;
 			this.tabPanelsList = this.tabsWrapper.querySelector(this.#tabpanelsListSelector) as HTMLElement;
-			if (this.tabButtonsList && this.tabPanelsList) {
+			if (this.tabPanelsList) {
 				this.defineTabsAndPanels();
 
-				if (this.tabs.length > 0 && this.tabs.length === this.panels.length) {
+				if (this.panels.length > 0) {
 					this.checkMatchMediaRule();
 					window.addEventListener('resize', this.updateAttributes);
 					this.updateAttributes();
@@ -140,13 +140,9 @@ export class Tabs {
 					if (this.#autoplay.delay > 0 && this.isInMatchMedia) {
 						this.runAutoPlay();
 					}
-				} else if (this.devMode) {
-					throw new Error(
-						`Tabs and panels should have the length > 0. And their lengths should be equal. Tabs number is: ${this.tabs.length}, panels number is: ${this.panels.length} | Табы и панели должны иметь равное количество элементов. Количество табов: ${this.tabs.length}, количество панелей: ${this.panels.length}`,
-					);
 				}
 			} else if (this.devMode) {
-				throw new Error('Tabs or panels not found | Табы или панели не найдены');
+				throw new Error('Panels not found | Панели не найдены с контентом для табов не найдены');
 			}
 			this.#inited = true;
 			if (this.isInMatchMedia) {
@@ -322,14 +318,14 @@ export class Tabs {
 	};
 
 	protected setActiveAttributes = (index: number) => {
-		this.tabs[index].setAttribute('tabindex', '0');
-		this.tabs[index].setAttribute('aria-selected', 'true');
+		this.tabs[index]?.setAttribute('tabindex', '0');
+		this.tabs[index]?.setAttribute('aria-selected', 'true');
 		this.panels[index].removeAttribute('inert');
 	};
 
 	protected setActiveClasses = (index: number) => {
-		this.tabs[index].classList.remove(CLASSES.UNACTIVE);
-		this.tabs[index].classList.add(CLASSES.ACTIVE);
+		this.tabs[index]?.classList.remove(CLASSES.UNACTIVE);
+		this.tabs[index]?.classList.add(CLASSES.ACTIVE);
 		this.panels[index].classList.remove(CLASSES.UNACTIVE);
 		this.panels[index].classList.add(CLASSES.ACTIVE);
 	};
@@ -399,19 +395,20 @@ export class Tabs {
 		this.tabsWrapper.setAttribute('aria-orientation', this.orientation);
 		this.tabButtonsList?.classList.add(CLASSES.TAB_LIST);
 		this.tabPanelsList?.classList.add(CLASSES.PANEL_LIST);
-		this.tabs.forEach((tab, index) => {
-			tab.classList.add(CLASSES.TAB);
-			tab.setAttribute('aria-label', `${index}`);
-			tab.setAttribute('role', this.#defaultRoles.tab);
-			tab.setAttribute('id', `${this.generatedId}-tab-${index}`);
-			tab.setAttribute('aria-controls', `${this.generatedId}-tabpanel-${index}`);
-
-			tab.dataset.deletable = `${this.#deletableTabs}`;
-			this.panels[index].classList.add(CLASSES.PANEL);
-			this.panels[index].setAttribute('aria-labelledby', `${this.generatedId}-tab-${index}`);
-			this.panels[index].setAttribute('id', `${this.generatedId}-tabpanel-${index}`);
-			this.panels[index].setAttribute('aria-label', `${index}`);
-			this.panels[index].setAttribute('role', this.#defaultRoles.tabpanel);
+		this.panels.forEach((panel, index) => {
+			if (this.tabs[index]) {
+				this.tabs[index].classList.add(CLASSES.TAB);
+				this.tabs[index].setAttribute('aria-label', `${index}`);
+				this.tabs[index].setAttribute('role', this.#defaultRoles.tab);
+				this.tabs[index].setAttribute('id', `${this.generatedId}-tab-${index}`);
+				this.tabs[index].setAttribute('aria-controls', `${this.generatedId}-tabpanel-${index}`);
+				this.tabs[index].dataset.deletable = `${this.#deletableTabs}`;
+			}
+			panel.classList.add(CLASSES.PANEL);
+			panel.setAttribute('aria-labelledby', `${this.generatedId}-tab-${index}`);
+			panel.setAttribute('id', `${this.generatedId}-tabpanel-${index}`);
+			panel.setAttribute('aria-label', `${index}`);
+			panel.setAttribute('role', this.#defaultRoles.tabpanel);
 		});
 		this.setUnactiveAll();
 	};
