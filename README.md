@@ -39,6 +39,16 @@ const tabs = new Tabs(
 ```
 Tabs will not initialize, if quantity of buttons and content blocks are not equal
 
+### Import styles in CSS or SCSS
+
+```scss
+@import '@digital-butlers/tabs/scss';
+```
+
+```scss
+@import '@digital-butlers/tabs/css';
+```
+
 ## API
 
 ### Config Properties

@@ -1,15 +1,15 @@
-var S = Object.defineProperty;
-var R = (u, t, e) => t in u ? S(u, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : u[t] = e;
-var i = (u, t, e) => (R(u, typeof t != "symbol" ? t + "" : t, e), e), M = (u, t, e) => {
-  if (!t.has(u))
+var x = Object.defineProperty;
+var R = (r, t, e) => t in r ? x(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var i = (r, t, e) => (R(r, typeof t != "symbol" ? t + "" : t, e), e), D = (r, t, e) => {
+  if (!t.has(r))
     throw TypeError("Cannot " + e);
 };
-var h = (u, t, e) => (M(u, t, "read from private field"), e ? e.call(u) : t.get(u)), d = (u, t, e) => {
-  if (t.has(u))
+var h = (r, t, e) => (D(r, t, "read from private field"), e ? e.call(r) : t.get(r)), d = (r, t, e) => {
+  if (t.has(r))
     throw TypeError("Cannot add the same private member more than once");
-  t instanceof WeakSet ? t.add(u) : t.set(u, e);
-}, n = (u, t, e, s) => (M(u, t, "write to private field"), s ? s.call(u, e) : t.set(u, e), e);
-const r = {
+  t instanceof WeakSet ? t.add(r) : t.set(r, e);
+}, o = (r, t, e, s) => (D(r, t, "write to private field"), s ? s.call(r, e) : t.set(r, e), e);
+const u = {
   ACTIVE: "js--active",
   UNACTIVE: "js--unactive",
   VISIBLE: "js--visible",
@@ -29,23 +29,23 @@ const r = {
   ENTER: "Enter",
   SPACE: " "
 };
-const D = (u) => u ? Array.prototype.slice.call(u.children) : [], N = (u = 5) => {
+const P = (r) => r ? Array.prototype.slice.call(r.children) : [], N = (r = 5) => {
   let t = "";
   const e = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", s = e.length;
   let a = 0;
-  for (; a < u; )
+  for (; a < r; )
     t += e.charAt(Math.floor(Math.random() * s)), a += 1;
   return t;
 };
 var c;
-(function(u) {
-  u.click = "click", u.mouseover = "mouseover";
+(function(r) {
+  r.click = "click", r.mouseover = "mouseover";
 })(c || (c = {}));
-var L, m, w, v, A, p, E, b, g, f, B;
-class $ {
-  constructor(t = '[data-tabs="wrapper"]', { tabbuttonsListSelector: e = '[data-tabs="tabs"]', tabpanelsListSelector: s = '[data-tabs="content"]', deletableTabs: a = !1, initialTab: o = 0, equalHeight: T = !1, orientation: y = "horizontal", triggerEvent: I = c.click, autoplay: P = {
+var L, m, w, v, A, p, f, b, E, I, y;
+class F {
+  constructor(t = '[data-tabs="wrapper"]', { tabbuttonsListSelector: e = '[data-tabs="tabs"]', tabpanelsListSelector: s = '[data-tabs="content"]', deletableTabs: a = !1, initialTab: n = 0, equalHeight: T = !1, orientation: M = "horizontal", triggerEvent: g = c.click, autoplay: B = {
     delay: 0
-  }, on: k = {}, matchMediaRule: C, devMode: x = !1 }) {
+  }, on: k = {}, matchMediaRule: C, devMode: S = !1 }) {
     d(this, L, void 0);
     d(this, m, void 0);
     i(this, "activeIndex");
@@ -59,7 +59,7 @@ class $ {
     d(this, A, void 0);
     d(this, p, void 0);
     i(this, "generatedId");
-    d(this, E, void 0);
+    d(this, f, void 0);
     i(this, "tabsWrapper");
     i(this, "tabButtonsList");
     i(this, "tabPanelsList");
@@ -67,9 +67,9 @@ class $ {
     i(this, "panels");
     i(this, "on");
     d(this, b, void 0);
-    d(this, g, void 0);
-    d(this, f, void 0);
-    d(this, B, void 0);
+    d(this, E, void 0);
+    d(this, I, void 0);
+    d(this, y, void 0);
     i(this, "matchMediaRule");
     i(this, "isInMatchMedia");
     i(this, "devMode");
@@ -85,7 +85,7 @@ class $ {
       }
     });
     i(this, "goTo", (t, e = !0) => {
-      h(this, g) && (this.activeIndex = t, this.updateProperties(), this.setUnactiveAll(), this.setActiveAttributes(t), this.setActiveClasses(t), e && this.focusTab(t), this.on.tabChange && this.on.tabChange(this));
+      h(this, E) && (this.activeIndex = t, this.updateProperties(), this.setUnactiveAll(), this.setActiveAttributes(t), this.setActiveClasses(t), e && this.focusTab(t), this.on.tabChange && this.on.tabChange(this));
     });
     i(this, "goToNext", () => {
       this.goTo(this.nextIndex);
@@ -103,7 +103,7 @@ class $ {
         throw new Error(`Icorrect type of event. Correct types are: ${Object.values(c).join(", ")} | \u041D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u044B\u0439 \u0442\u0438\u043F \u0441\u043E\u0431\u044B\u0442\u0438\u044F. \u041F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0435 \u0442\u0438\u043F\u044B: ${Object.values(c).join(", ")}`);
     });
     i(this, "runAutoPlay", () => {
-      n(this, A, setTimeout(() => {
+      o(this, A, setTimeout(() => {
         this.goTo(this.nextIndex, !1), this.runAutoPlay();
       }, h(this, v).delay));
     });
@@ -122,9 +122,9 @@ class $ {
     });
     i(this, "keydownHandler", (t) => {
       if (this.isInMatchMedia) {
-        const e = this.getEventDetails(t), { targetButton: s, targetIndex: a, key: o } = e;
+        const e = this.getEventDetails(t), { targetButton: s, targetIndex: a, key: n } = e;
         if (s && a !== void 0 && this.tabs.includes(s))
-          switch (this.stopAutoPlay(), o) {
+          switch (this.stopAutoPlay(), n) {
             case l.LEFT:
             case l.RIGHT: {
               t.preventDefault(), this.orientation === "horizontal" && this.switchTabOnArrowPress(e);
@@ -160,7 +160,7 @@ class $ {
     });
     i(this, "setUnactiveAll", () => {
       this.setUnactiveAttributesAll(), [this.tabs, this.panels].flat().forEach((t) => {
-        t.classList.remove(r.ACTIVE), t.classList.add(r.UNACTIVE);
+        t.classList.remove(u.ACTIVE), t.classList.add(u.UNACTIVE);
       });
     });
     i(this, "setUnactiveAttributesAll", () => {
@@ -171,10 +171,12 @@ class $ {
       });
     });
     i(this, "setActiveAttributes", (t) => {
-      this.tabs[t].setAttribute("tabindex", "0"), this.tabs[t].setAttribute("aria-selected", "true"), this.panels[t].removeAttribute("inert");
+      var e, s;
+      (e = this.tabs[t]) == null || e.setAttribute("tabindex", "0"), (s = this.tabs[t]) == null || s.setAttribute("aria-selected", "true"), this.panels[t].removeAttribute("inert");
     });
     i(this, "setActiveClasses", (t) => {
-      this.tabs[t].classList.remove(r.UNACTIVE), this.tabs[t].classList.add(r.ACTIVE), this.panels[t].classList.remove(r.UNACTIVE), this.panels[t].classList.add(r.ACTIVE);
+      var e, s;
+      (e = this.tabs[t]) == null || e.classList.remove(u.UNACTIVE), (s = this.tabs[t]) == null || s.classList.add(u.ACTIVE), this.panels[t].classList.remove(u.UNACTIVE), this.panels[t].classList.add(u.ACTIVE);
     });
     i(this, "focusTab", (t) => {
       this.tabs[t].focus();
@@ -185,16 +187,16 @@ class $ {
         case l.LEFT:
         case l.UP: {
           if (s !== void 0) {
-            const o = s - 1 < 0 ? Number(this.lastIndex) : s - 1;
-            this.triggerEvent === c.mouseover ? this.goTo(o) : this.focusTab(o);
+            const n = s - 1 < 0 ? Number(this.lastIndex) : s - 1;
+            this.triggerEvent === c.mouseover ? this.goTo(n) : this.focusTab(n);
           }
           break;
         }
         case l.RIGHT:
         case l.DOWN: {
           if (s !== void 0) {
-            const o = s >= Number(this.lastIndex) ? 0 : s + 1;
-            this.triggerEvent === c.mouseover ? this.goTo(o) : this.focusTab(o);
+            const n = s >= Number(this.lastIndex) ? 0 : s + 1;
+            this.triggerEvent === c.mouseover ? this.goTo(n) : this.focusTab(n);
           }
           break;
         }
@@ -209,30 +211,30 @@ class $ {
     });
     i(this, "assignTabsAttributes", () => {
       var t, e;
-      this.tabsWrapper.classList.add(r.TABS_WRAPPER), this.tabsWrapper.setAttribute("aria-orientation", this.orientation), (t = this.tabButtonsList) == null || t.classList.add(r.TAB_LIST), (e = this.tabPanelsList) == null || e.classList.add(r.PANEL_LIST), this.tabs.forEach((s, a) => {
-        s.classList.add(r.TAB), s.setAttribute("aria-label", `${a}`), s.setAttribute("role", h(this, f).tab), s.setAttribute("id", `${this.generatedId}-tab-${a}`), s.setAttribute("aria-controls", `${this.generatedId}-tabpanel-${a}`), s.dataset.deletable = `${h(this, w)}`, this.panels[a].classList.add(r.PANEL), this.panels[a].setAttribute("aria-labelledby", `${this.generatedId}-tab-${a}`), this.panels[a].setAttribute("id", `${this.generatedId}-tabpanel-${a}`), this.panels[a].setAttribute("aria-label", `${a}`), this.panels[a].setAttribute("role", h(this, f).tabpanel);
+      this.tabsWrapper.classList.add(u.TABS_WRAPPER), this.tabsWrapper.setAttribute("aria-orientation", this.orientation), (t = this.tabButtonsList) == null || t.classList.add(u.TAB_LIST), (e = this.tabPanelsList) == null || e.classList.add(u.PANEL_LIST), this.panels.forEach((s, a) => {
+        this.tabs[a] && (this.tabs[a].classList.add(u.TAB), this.tabs[a].setAttribute("aria-label", `${a}`), this.tabs[a].setAttribute("role", h(this, I).tab), this.tabs[a].setAttribute("id", `${this.generatedId}-tab-${a}`), this.tabs[a].setAttribute("aria-controls", `${this.generatedId}-tabpanel-${a}`), this.tabs[a].dataset.deletable = `${h(this, w)}`), s.classList.add(u.PANEL), s.setAttribute("aria-labelledby", `${this.generatedId}-tab-${a}`), s.setAttribute("id", `${this.generatedId}-tabpanel-${a}`), s.setAttribute("aria-label", `${a}`), s.setAttribute("role", h(this, I).tabpanel);
       }), this.setUnactiveAll();
     });
     i(this, "removeTabsAttributes", () => {
       var t, e;
-      this.tabsWrapper.classList.remove(r.TABS_WRAPPER), this.tabsWrapper.removeAttribute("aria-orientation"), (t = this.tabButtonsList) == null || t.classList.remove(r.TAB_LIST), (e = this.tabPanelsList) == null || e.classList.remove(r.PANEL_LIST), this.tabs.forEach((s, a) => {
-        if (s.classList.remove(r.TAB), s.classList.remove(r.ACTIVE), s.classList.remove(r.UNACTIVE), s.removeAttribute("tabindex"), s.removeAttribute("aria-label"), s.removeAttribute("aria-selected"), s.removeAttribute("role"), s.removeAttribute("id"), s.removeAttribute("aria-controls"), delete s.dataset.deletable, this.panels[a].classList.remove(r.PANEL), this.panels[a].classList.remove(r.ACTIVE), this.panels[a].classList.remove(r.UNACTIVE), this.panels[a].removeAttribute("aria-labelledby"), this.panels[a].removeAttribute("id"), this.panels[a].removeAttribute("aria-label"), this.panels[a].removeAttribute("role"), this.panels[a].removeAttribute("inert"), h(this, E)) {
-          const o = this.panels[a].getAttribute("style");
-          if (o) {
-            let T = o.split(";").filter((I) => I.trim() !== "");
-            T = T.filter((I) => !I.trim().toLowerCase().startsWith("height:"));
-            const y = T.join(";");
-            this.panels[a].setAttribute("style", y);
+      this.tabsWrapper.classList.remove(u.TABS_WRAPPER), this.tabsWrapper.removeAttribute("aria-orientation"), (t = this.tabButtonsList) == null || t.classList.remove(u.TAB_LIST), (e = this.tabPanelsList) == null || e.classList.remove(u.PANEL_LIST), this.tabs.forEach((s, a) => {
+        if (s.classList.remove(u.TAB), s.classList.remove(u.ACTIVE), s.classList.remove(u.UNACTIVE), s.removeAttribute("tabindex"), s.removeAttribute("aria-label"), s.removeAttribute("aria-selected"), s.removeAttribute("role"), s.removeAttribute("id"), s.removeAttribute("aria-controls"), delete s.dataset.deletable, this.panels[a].classList.remove(u.PANEL), this.panels[a].classList.remove(u.ACTIVE), this.panels[a].classList.remove(u.UNACTIVE), this.panels[a].removeAttribute("aria-labelledby"), this.panels[a].removeAttribute("id"), this.panels[a].removeAttribute("aria-label"), this.panels[a].removeAttribute("role"), this.panels[a].removeAttribute("inert"), h(this, f)) {
+          const n = this.panels[a].getAttribute("style");
+          if (n) {
+            let T = n.split(";").filter((g) => g.trim() !== "");
+            T = T.filter((g) => !g.trim().toLowerCase().startsWith("height:"));
+            const M = T.join(";");
+            this.panels[a].setAttribute("style", M);
           }
           this.panels[a].removeAttribute("style");
         }
       });
     });
     i(this, "getEventDetails", (t) => {
-      const e = t instanceof KeyboardEvent ? t.key : void 0, s = t.target, a = s.closest(h(this, B).tab), o = a == null ? void 0 : a.getAttribute("aria-label");
+      const e = t instanceof KeyboardEvent ? t.key : void 0, s = t.target, a = s.closest(h(this, y).tab), n = a == null ? void 0 : a.getAttribute("aria-label");
       return {
         target: s,
-        targetIndex: o ? +o : void 0,
+        targetIndex: n ? +n : void 0,
         targetButton: a,
         key: e,
         event: t
@@ -245,7 +247,7 @@ class $ {
       this.checkMatchMediaRule(), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes();
     });
     i(this, "defineTabsAndPanels", () => {
-      this.tabs = D(this.tabButtonsList), this.panels = D(this.tabPanelsList);
+      this.tabs = P(this.tabButtonsList), this.panels = P(this.tabPanelsList);
     });
     i(this, "checkMatchMediaRule", () => {
       this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
@@ -254,26 +256,23 @@ class $ {
       this.checkMatchMediaRule(), this.defineTabsAndPanels(), this.updateAttributes();
     });
     i(this, "destroy", () => {
-      this.removeTabsAttributes(), this.removeListenersForTabs(), window.removeEventListener("resize", this.setEqualHeight), n(this, b, !0);
+      this.removeTabsAttributes(), this.removeListenersForTabs(), window.removeEventListener("resize", this.setEqualHeight), o(this, b, !0);
     });
-    n(this, L, s), n(this, m, e), n(this, w, a), this.tabsWrapper = typeof t == "string" ? document.querySelector(t) : t, this.tabButtonsList = void 0, this.tabPanelsList = void 0, this.tabButtonsList = void 0, this.tabs = [], this.panels = [], this.orientation = y === "vertical" ? "vertical" : "horizontal", this.triggerEvent = I, this.activeIndex = o, this.nextIndex = void 0, this.prevIndex = void 0, this.lastIndex = void 0, n(this, v, P), n(this, A, 0), n(this, p, !1), this.on = k, this.matchMediaRule = C, this.isInMatchMedia = !1, this.generatedId = N(), n(this, E, T), n(this, f, {
+    o(this, L, s), o(this, m, e), o(this, w, a), this.tabsWrapper = typeof t == "string" ? document.querySelector(t) : t, this.tabButtonsList = void 0, this.tabPanelsList = void 0, this.tabButtonsList = void 0, this.tabs = [], this.panels = [], this.orientation = M === "vertical" ? "vertical" : "horizontal", this.triggerEvent = g, this.activeIndex = n, this.nextIndex = void 0, this.prevIndex = void 0, this.lastIndex = void 0, o(this, v, B), o(this, A, 0), o(this, p, !1), this.on = k, this.matchMediaRule = C, this.isInMatchMedia = !1, this.generatedId = N(), o(this, f, T), o(this, I, {
       tab: "tab",
       tabpanel: "tabpanel"
-    }), n(this, B, {
+    }), o(this, y, {
       tab: '[role="tab"]',
       tabpanel: '[role="tabpanel"]'
-    }), n(this, b, !1), n(this, g, !1), this.devMode = x, this.init();
+    }), o(this, b, !1), o(this, E, !1), this.devMode = S, this.init();
   }
   init() {
     if (this.devMode && console.warn(`Tabs dev mode enabled! Instance ID: ${this.generatedId}. Read the docs https://www.npmjs.com/package/@digital-butlers/tabs | \u0412 \u0442\u0430\u0431\u0430\u0445 \u0432\u043A\u043B\u044E\u0447\u0435\u043D \u0440\u0435\u0436\u0438\u043C \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A\u0430! ID \u044D\u043A\u0437\u0435\u043C\u043F\u043B\u044F\u0440\u0430: ${this.generatedId}. \u0427\u0438\u0442\u0430\u0439 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u0446\u0438\u044E https://www.npmjs.com/package/@digital-butlers/tabs`), this.tabsWrapper && !h(this, b)) {
-      if (this.on.beforeInit && this.on.beforeInit(this), this.tabButtonsList = this.tabsWrapper.querySelector(h(this, m)), this.tabPanelsList = this.tabsWrapper.querySelector(h(this, L)), this.tabButtonsList && this.tabPanelsList) {
-        if (this.defineTabsAndPanels(), this.tabs.length > 0 && this.tabs.length === this.panels.length)
-          this.checkMatchMediaRule(), window.addEventListener("resize", this.updateAttributes), this.updateAttributes(), h(this, E) && (this.setEqualHeight(), window.addEventListener("resize", this.setEqualHeight)), h(this, p) || (this.addListenersForTabs(), n(this, p, !0)), h(this, v).delay > 0 && this.isInMatchMedia && this.runAutoPlay();
-        else if (this.devMode)
-          throw new Error(`Tabs and panels should have the length > 0. And their lengths should be equal. Tabs number is: ${this.tabs.length}, panels number is: ${this.panels.length} | \u0422\u0430\u0431\u044B \u0438 \u043F\u0430\u043D\u0435\u043B\u0438 \u0434\u043E\u043B\u0436\u043D\u044B \u0438\u043C\u0435\u0442\u044C \u0440\u0430\u0432\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432. \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u0430\u0431\u043E\u0432: ${this.tabs.length}, \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043F\u0430\u043D\u0435\u043B\u0435\u0438\u0306: ${this.panels.length}`);
-      } else if (this.devMode)
-        throw new Error("Tabs or panels not found | \u0422\u0430\u0431\u044B \u0438\u043B\u0438 \u043F\u0430\u043D\u0435\u043B\u0438 \u043D\u0435 \u043D\u0430\u0438\u0306\u0434\u0435\u043D\u044B");
-      n(this, g, !0), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes(), this.on.afterInit && this.on.afterInit(this);
+      if (this.on.beforeInit && this.on.beforeInit(this), this.tabButtonsList = this.tabsWrapper.querySelector(h(this, m)), this.tabPanelsList = this.tabsWrapper.querySelector(h(this, L)), this.tabPanelsList)
+        this.defineTabsAndPanels(), this.panels.length > 0 && (this.checkMatchMediaRule(), window.addEventListener("resize", this.updateAttributes), this.updateAttributes(), h(this, f) && (this.setEqualHeight(), window.addEventListener("resize", this.setEqualHeight)), h(this, p) || (this.addListenersForTabs(), o(this, p, !0)), h(this, v).delay > 0 && this.isInMatchMedia && this.runAutoPlay());
+      else if (this.devMode)
+        throw new Error("Panels not found | \u041F\u0430\u043D\u0435\u043B\u0438 \u043D\u0435 \u043D\u0430\u0438\u0306\u0434\u0435\u043D\u044B \u0441 \u043A\u043E\u043D\u0442\u0435\u043D\u0442\u043E\u043C \u0434\u043B\u044F \u0442\u0430\u0431\u043E\u0432 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u044B");
+      o(this, E, !0), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes(), this.on.afterInit && this.on.afterInit(this);
     } else if (this.tabsWrapper) {
       if (h(this, b) && this.devMode)
         throw new Error("Tabs already destroyed | \u0422\u0430\u0431\u044B \u0443\u0436\u0435 \u0431\u044B\u043B\u0438 \u0434\u0435\u0441\u0442\u0440\u043E\u0435\u043D\u044B");
@@ -281,8 +280,8 @@ class $ {
       throw new Error("Tabs wrapper not found | \u041E\u0431\u0435\u0440\u0442\u043A\u0430 \u0442\u0430\u0431\u043E\u0432 \u043D\u0435 \u043D\u0430\u0438\u0306\u0434\u0435\u043D\u0430");
   }
 }
-L = new WeakMap(), m = new WeakMap(), w = new WeakMap(), v = new WeakMap(), A = new WeakMap(), p = new WeakMap(), E = new WeakMap(), b = new WeakMap(), g = new WeakMap(), f = new WeakMap(), B = new WeakMap();
+L = new WeakMap(), m = new WeakMap(), w = new WeakMap(), v = new WeakMap(), A = new WeakMap(), p = new WeakMap(), f = new WeakMap(), b = new WeakMap(), E = new WeakMap(), I = new WeakMap(), y = new WeakMap();
 export {
-  $ as Tabs
+  F as Tabs
 };
 //# sourceMappingURL=index.js.map
