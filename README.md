@@ -182,12 +182,12 @@ Tabs will not initialize, if quantity of buttons and content blocks are not equa
 
 ### `goToNext()`
 *Return:* -  
-*Arguments:* -  
+*Arguments:* `{ loop: boolean }`. By default `loop = true`, so after last tab first tab will turn active
 *Description:* go to next tab.  
 
 ### `goToPrev()`
 *Return:* -  
-*Arguments:* -  
+*Arguments:* `{ loop: boolean }`. By default `loop = true`, so after first tab last tab will turn active. 
 *Description:* go to previous tab.  
 
 ### `stopAutoPlay() ` 

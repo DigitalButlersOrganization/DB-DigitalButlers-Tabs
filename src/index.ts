@@ -7,6 +7,7 @@ import {
 	AutoPlayModel,
 	EventDetailsModel,
 	EventsModel,
+	GoToNextPreviousProperties,
 	OrientationType,
 	TabsConfigModel,
 	TriggerEvents,
@@ -192,12 +193,18 @@ export class Tabs {
 		}
 	};
 
-	public goToNext = () => {
-		this.goTo(this.nextIndex as number);
+	public goToNext = (properties: GoToNextPreviousProperties = {}) => {
+		const loopProperty = properties ? (properties.loop ?? true) : true;
+		if (loopProperty || (this.lastIndex && this.activeIndex < this.lastIndex)) {
+			this.goTo(this.nextIndex as number);
+		}
 	};
 
-	public goToPrev = () => {
-		this.goTo(this.prevIndex as number);
+	public goToPrev = (properties: GoToNextPreviousProperties = {}) => {
+		const loopProperty = properties ? (properties.loop ?? true) : true;
+		if (loopProperty || this.activeIndex > 0) {
+			this.goTo(this.prevIndex as number);
+		}
 	};
 
 	public stopAutoPlay = () => {
@@ -331,7 +338,7 @@ export class Tabs {
 	};
 
 	protected focusTab = (order: number) => {
-		this.tabs[order].focus();
+		this.tabs[order]?.focus();
 	};
 
 	// When a tablist is aria-orientation is set to vertical, only up and down arrow
@@ -466,7 +473,7 @@ export class Tabs {
 	};
 
 	private updateProperties = (): void => {
-		this.lastIndex = this.tabs.length - 1;
+		this.lastIndex = this.panels.length - 1;
 		this.nextIndex = this.activeIndex >= this.lastIndex ? 0 : this.activeIndex + 1;
 		this.prevIndex = this.activeIndex - 1 < 0 ? this.lastIndex : this.activeIndex - 1;
 	};

@@ -25,3 +25,10 @@ const mainTabs = new Tabs('.app', {
 	},
 	devMode: true,
 });
+
+document.querySelector('[data-role="next"]')?.addEventListener('click', () => {
+	mainTabs.goToNext();
+});
+document.querySelector('[data-role="prev"]')?.addEventListener('click', () => {
+	mainTabs.goToPrev();
+});
