@@ -110,7 +110,7 @@ export class Tabs {
 		if (this.devMode) {
 			// eslint-disable-next-line no-console
 			console.warn(
-				`Tabs dev mode enabled! Instance ID: ${this.generatedId} | В табах включен режим разработчика! ID экземпляра: ${this.generatedId}`,
+				`Tabs dev mode enabled! Instance ID: ${this.generatedId}. Read the docs https://www.npmjs.com/package/@digital-butlers/tabs | В табах включен режим разработчика! ID экземпляра: ${this.generatedId}. Читай документацию https://www.npmjs.com/package/@digital-butlers/tabs`,
 			);
 		}
 		if (this.tabsWrapper && !this.#destroyed) {

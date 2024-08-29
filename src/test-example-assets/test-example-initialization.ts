@@ -23,4 +23,5 @@ const mainTabs = new Tabs('.app', {
 	autoplay: {
 		delay: 0,
 	},
+	devMode: true,
 });
