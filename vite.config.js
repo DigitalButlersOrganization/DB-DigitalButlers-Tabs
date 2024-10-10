@@ -1,13 +1,12 @@
 import { defineConfig } from 'vite';
 import postcssPresetEnv from 'postcss-preset-env';
 import fs from 'node:fs';
-
 import typescript from '@rollup/plugin-typescript';
 
 export default defineConfig({
 	build: {
 		lib: {
-			entry: ['./src/index.ts'],
+			entry: './src/index.ts',
 			name: 'DigitaButlers-Tabs',
 			fileName: 'index',
 			formats: ['es'],
@@ -21,13 +20,16 @@ export default defineConfig({
 		sourcemap: true,
 	},
 	plugins: [
-		typescript({}),
+		typescript({
+			outDir: 'dist',
+			declaration: true,
+			rootDir: './src',
+		}),
 		{
 			name: 'generate-css-variants',
 			writeBundle() {
 				const scssContent = fs.readFileSync('src/style.scss', 'utf8');
 
-				// Записываем SCSS файлы
 				fs.writeFileSync('dist/style.scss', scssContent.replace(/\s+/g, ' ').trim());
 			},
 		},
