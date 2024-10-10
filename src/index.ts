@@ -121,25 +121,25 @@ export class Tabs {
 			this.tabButtonsList = this.tabsWrapper.querySelector(this.#tabbuttonsListSelector) as HTMLElement;
 			this.tabPanelsList = this.tabsWrapper.querySelector(this.#tabpanelsListSelector) as HTMLElement;
 			if (this.tabPanelsList) {
-				this.defineTabsAndPanels();
+				this._defineTabsAndPanels();
 
 				if (this.panels.length > 0) {
-					this.checkMatchMediaRule();
-					window.addEventListener('resize', this.updateAttributes);
-					this.updateAttributes();
+					this._checkMatchMediaRule();
+					window.addEventListener('resize', this._updateAttributes);
+					this._updateAttributes();
 
 					if (this.#equalHeight) {
-						this.setEqualHeight();
-						window.addEventListener('resize', this.setEqualHeight);
+						this._setEqualHeight();
+						window.addEventListener('resize', this._setEqualHeight);
 					}
 
 					if (!this.#listenersAdded) {
-						this.addListenersForTabs();
+						this._addListenersForTabs();
 						this.#listenersAdded = true;
 					}
 
 					if (this.#autoplay.delay > 0 && this.isInMatchMedia) {
-						this.runAutoPlay();
+						this._runAutoPlay();
 					}
 				}
 			} else if (this.devMode) {
@@ -147,10 +147,10 @@ export class Tabs {
 			}
 			this.#inited = true;
 			if (this.isInMatchMedia) {
-				this.assignTabsAttributes();
+				this._assignTabsAttributes();
 				this.goTo(this.activeIndex, false);
 			} else {
-				this.removeTabsAttributes();
+				this._removeTabsAttributes();
 			}
 			if (this.on.afterInit) {
 				this.on.afterInit(this);
@@ -164,7 +164,7 @@ export class Tabs {
 		}
 	}
 
-	private setEqualHeight = () => {
+	private _setEqualHeight = () => {
 		if (this.isInMatchMedia) {
 			this.panels.forEach((element) => {
 				element.style.height = 'auto';
@@ -179,7 +179,7 @@ export class Tabs {
 	public goTo = (index: number, setFocus: boolean = true) => {
 		if (this.#inited) {
 			this.activeIndex = index;
-			this.updateProperties();
+			this._updateProperties();
 			this.setUnactiveAll();
 			this.setActiveAttributes(index);
 			this.setActiveClasses(index);
@@ -213,9 +213,9 @@ export class Tabs {
 
 	public changeTriggerEvent = (eventName: TriggerEvents) => {
 		if (eventName in TriggerEvents) {
-			this.removeListenersForTabs();
+			this._removeListenersForTabs();
 			this.triggerEvent = eventName;
-			this.addListenersForTabs();
+			this._addListenersForTabs();
 		} else if (this.devMode) {
 			throw new Error(
 				`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')} | Некорректный тип события. Правильные типы: ${Object.values(TriggerEvents).join(', ')}`,
@@ -223,36 +223,36 @@ export class Tabs {
 		}
 	};
 
-	private runAutoPlay = () => {
+	private _runAutoPlay = () => {
 		this.#autoplayTimeout = setTimeout(() => {
 			this.goTo(this.nextIndex as number, false);
-			this.runAutoPlay();
+			this._runAutoPlay();
 		}, this.#autoplay.delay);
 	};
 
-	private addListenersForTabs = () => {
-		this.tabsWrapper.addEventListener(this.triggerEvent, this.clickHandler);
-		window.addEventListener('keydown', this.keydownHandler);
+	private _addListenersForTabs = () => {
+		this.tabsWrapper.addEventListener(this.triggerEvent, this._clickHandler);
+		window.addEventListener('keydown', this._keydownHandler);
 	};
 
-	private removeListenersForTabs = () => {
-		this.tabsWrapper.removeEventListener(this.triggerEvent, this.clickHandler);
-		window.removeEventListener('keydown', this.keydownHandler);
+	private _removeListenersForTabs = () => {
+		this.tabsWrapper.removeEventListener(this.triggerEvent, this._clickHandler);
+		window.removeEventListener('keydown', this._keydownHandler);
 	};
 
-	private clickHandler = (event: MouseEvent) => {
+	private _clickHandler = (event: MouseEvent) => {
 		if (this.isInMatchMedia) {
 			this.stopAutoPlay();
-			const { targetIndex, targetButton } = this.getEventDetails(event);
+			const { targetIndex, targetButton } = this._getEventDetails(event);
 			if (targetIndex !== undefined && this.tabs.includes(targetButton)) {
 				this.goTo(+targetIndex);
 			}
 		}
 	};
 
-	private keydownHandler = (event: KeyboardEvent) => {
+	private _keydownHandler = (event: KeyboardEvent) => {
 		if (this.isInMatchMedia) {
-			const eventDetails: EventDetailsModel = this.getEventDetails(event);
+			const eventDetails: EventDetailsModel = this._getEventDetails(event);
 			const { targetButton, targetIndex, key } = eventDetails;
 			if (targetButton && targetIndex !== undefined && this.tabs.includes(targetButton)) {
 				this.stopAutoPlay();
@@ -261,7 +261,7 @@ export class Tabs {
 					case KEYS.RIGHT: {
 						event.preventDefault();
 						if (this.orientation === 'horizontal') {
-							this.switchTabOnArrowPress(eventDetails);
+							this._switchTabOnArrowPress(eventDetails);
 						}
 						break;
 					}
@@ -269,13 +269,13 @@ export class Tabs {
 					case KEYS.DOWN: {
 						event.preventDefault(); // prevent page scroll
 						if (this.orientation === 'vertical') {
-							this.switchTabOnArrowPress(eventDetails);
+							this._switchTabOnArrowPress(eventDetails);
 						}
 						break;
 					}
 					case KEYS.DELETE: {
 						event.preventDefault();
-						this.deleteTab(eventDetails);
+						this._deleteTab(eventDetails);
 						break;
 					}
 					case KEYS.ENTER: {
@@ -343,7 +343,7 @@ export class Tabs {
 
 	// When a tablist is aria-orientation is set to vertical, only up and down arrow
 	// should function. In all other cases only left and right arrow function.
-	private switchTabOnArrowPress = (eventDetails: EventDetailsModel) => {
+	private _switchTabOnArrowPress = (eventDetails: EventDetailsModel) => {
 		const { key, targetIndex, event } = eventDetails;
 		event.preventDefault();
 		switch (key) {
@@ -380,7 +380,7 @@ export class Tabs {
 	};
 
 	// Deletes a tab and its panel
-	private deleteTab = (eventDetails: EventDetailsModel) => {
+	private _deleteTab = (eventDetails: EventDetailsModel) => {
 		const { targetButton, targetIndex } = eventDetails;
 		if (targetButton.dataset.deletable === 'true' && targetIndex !== undefined) {
 			this.tabs[targetIndex].remove();
@@ -397,7 +397,7 @@ export class Tabs {
 		}
 	};
 
-	private assignTabsAttributes = () => {
+	private _assignTabsAttributes = () => {
 		this.tabsWrapper.classList.add(CLASSES.TABS_WRAPPER);
 		this.tabsWrapper.setAttribute('aria-orientation', this.orientation);
 		this.tabButtonsList?.classList.add(CLASSES.TAB_LIST);
@@ -420,7 +420,7 @@ export class Tabs {
 		this.setUnactiveAll();
 	};
 
-	private removeTabsAttributes = () => {
+	private _removeTabsAttributes = () => {
 		this.tabsWrapper.classList.remove(CLASSES.TABS_WRAPPER);
 		this.tabsWrapper.removeAttribute('aria-orientation');
 		this.tabButtonsList?.classList.remove(CLASSES.TAB_LIST);
@@ -458,7 +458,7 @@ export class Tabs {
 		});
 	};
 
-	private getEventDetails = (event: KeyboardEvent | MouseEvent): EventDetailsModel => {
+	private _getEventDetails = (event: KeyboardEvent | MouseEvent): EventDetailsModel => {
 		const key = event instanceof KeyboardEvent ? event.key : undefined;
 		const target = event.target as HTMLElement;
 		const targetTab = target.closest(this.#defaultSelectors.tab) as HTMLElement;
@@ -472,41 +472,41 @@ export class Tabs {
 		};
 	};
 
-	private updateProperties = (): void => {
+	private _updateProperties = (): void => {
 		this.lastIndex = this.panels.length - 1;
 		this.nextIndex = this.activeIndex >= this.lastIndex ? 0 : this.activeIndex + 1;
 		this.prevIndex = this.activeIndex - 1 < 0 ? this.lastIndex : this.activeIndex - 1;
 	};
 
-	private updateAttributes = (): void => {
-		this.checkMatchMediaRule();
+	private _updateAttributes = (): void => {
+		this._checkMatchMediaRule();
 		if (this.isInMatchMedia) {
-			this.assignTabsAttributes();
+			this._assignTabsAttributes();
 			this.goTo(this.activeIndex, false);
 		} else {
-			this.removeTabsAttributes();
+			this._removeTabsAttributes();
 		}
 	};
 
-	private defineTabsAndPanels = () => {
+	private _defineTabsAndPanels = () => {
 		this.tabs = getChildrenArray(this.tabButtonsList as HTMLElement);
 		this.panels = getChildrenArray(this.tabPanelsList as HTMLElement);
 	};
 
-	private checkMatchMediaRule = () => {
+	private _checkMatchMediaRule = () => {
 		this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
 	};
 
 	public update = () => {
-		this.checkMatchMediaRule();
-		this.defineTabsAndPanels();
-		this.updateAttributes();
+		this._checkMatchMediaRule();
+		this._defineTabsAndPanels();
+		this._updateAttributes();
 	};
 
 	public destroy = () => {
-		this.removeTabsAttributes();
-		this.removeListenersForTabs();
-		window.removeEventListener('resize', this.setEqualHeight);
+		this._removeTabsAttributes();
+		this._removeListenersForTabs();
+		window.removeEventListener('resize', this._setEqualHeight);
 		this.#destroyed = true;
 	};
 }

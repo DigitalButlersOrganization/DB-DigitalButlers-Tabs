@@ -38,6 +38,7 @@ module.exports = {
 		'unicorn/expiring-todo-comments': 0,
 		'lines-between-class-members': [1, 'always', { exceptAfterSingleLine: true }],
 		'default-param-last': 0,
+		'no-underscore-dangle': [1, { allowAfterThis: true }],
 	},
 	settings: {
 		'import/resolver': {
