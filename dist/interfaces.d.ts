@@ -61,3 +61,6 @@ export interface TabsModel {
     matchMediaRule: string;
     isInMatchMedia: boolean;
 }
+export interface GoToNextPreviousProperties {
+    loop?: boolean;
+}
