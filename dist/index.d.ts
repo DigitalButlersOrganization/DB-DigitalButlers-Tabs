@@ -20,7 +20,6 @@ export declare class Tabs {
     devMode: boolean;
     constructor(tabsWrapper: string | HTMLElement | undefined, { tabbuttonsListSelector, tabpanelsListSelector, deletableTabs, initialTab, equalHeight, orientation, triggerEvent, autoplay, on, matchMediaRule, devMode: developmentMode, }: TabsConfigModel);
     init(): void;
-    secret(): this;
     setEqualHeight(): void;
     goTo: (index: number, setFocus?: boolean) => void;
     goToNext: (properties?: GoToNextPreviousProperties) => void;
@@ -30,7 +29,7 @@ export declare class Tabs {
     runAutoPlay(): void;
     addListenersForTabs(): void;
     removeListenersForTabs(): void;
-    clickHandler(event: MouseEvent): void;
+    clickHandler: (event: MouseEvent) => void;
     keydownHandler(event: KeyboardEvent): void;
     protected setUnactiveAll: () => void;
     protected setUnactiveAttributesAll: () => void;
@@ -43,9 +42,9 @@ export declare class Tabs {
     removeTabsAttributes(): void;
     getEventDetails(event: KeyboardEvent | MouseEvent): EventDetailsModel;
     updateProperties(): void;
-    updateAttributes(): void;
+    updateAttributes: () => void;
     defineTabsAndPanels(): void;
-    checkMatchMediaRule: () => void;
+    private checkMatchMediaRule;
     update: () => void;
     destroy: () => void;
 }

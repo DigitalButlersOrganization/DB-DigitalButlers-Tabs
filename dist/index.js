@@ -93,6 +93,13 @@ class F {
       else if (this.devMode)
         throw new Error(`Icorrect type of event. Correct types are: ${Object.values(c).join(", ")} | \u041D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u044B\u0439 \u0442\u0438\u043F \u0441\u043E\u0431\u044B\u0442\u0438\u044F. \u041F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0435 \u0442\u0438\u043F\u044B: ${Object.values(c).join(", ")}`);
     });
+    a(this, "clickHandler", (t) => {
+      if (this.isInMatchMedia) {
+        this.stopAutoPlay();
+        const { targetIndex: e, targetButton: s } = this.getEventDetails(t);
+        e !== void 0 && this.tabs.includes(s) && this.goTo(+e);
+      }
+    });
     a(this, "setUnactiveAll", () => {
       this.setUnactiveAttributesAll(), [this.tabs, this.panels].flat().forEach((t) => {
         t.classList.remove(u.ACTIVE), t.classList.add(u.UNACTIVE);
@@ -116,6 +123,9 @@ class F {
     a(this, "focusTab", (t) => {
       var e;
       (e = this.tabs[t]) == null || e.focus();
+    });
+    a(this, "updateAttributes", () => {
+      this.checkMatchMediaRule(), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes();
     });
     a(this, "checkMatchMediaRule", () => {
       this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
@@ -147,9 +157,6 @@ class F {
     } else if (this.devMode)
       throw new Error("Tabs wrapper not found | \u041E\u0431\u0435\u0440\u0442\u043A\u0430 \u0442\u0430\u0431\u043E\u0432 \u043D\u0435 \u043D\u0430\u0438\u0306\u0434\u0435\u043D\u0430");
   }
-  secret() {
-    return this;
-  }
   setEqualHeight() {
     if (this.isInMatchMedia) {
       this.panels.forEach((e) => {
@@ -160,7 +167,6 @@ class F {
         e.style.height = `${t}px`;
       });
     }
-    this.secret();
   }
   runAutoPlay() {
     o(this, A, setTimeout(() => {
@@ -172,13 +178,6 @@ class F {
   }
   removeListenersForTabs() {
     this.tabsWrapper.removeEventListener(this.triggerEvent, this.clickHandler), window.removeEventListener("keydown", this.keydownHandler);
-  }
-  clickHandler(t) {
-    if (this.isInMatchMedia) {
-      this.stopAutoPlay();
-      const { targetIndex: e, targetButton: s } = this.getEventDetails(t);
-      e !== void 0 && this.tabs.includes(s) && this.goTo(+e);
-    }
   }
   keydownHandler(t) {
     if (this.isInMatchMedia) {
@@ -279,9 +278,6 @@ class F {
   }
   updateProperties() {
     this.lastIndex = this.panels.length - 1, this.nextIndex = this.activeIndex >= this.lastIndex ? 0 : this.activeIndex + 1, this.prevIndex = this.activeIndex - 1 < 0 ? this.lastIndex : this.activeIndex - 1;
-  }
-  updateAttributes() {
-    this.checkMatchMediaRule(), this.isInMatchMedia ? (this.assignTabsAttributes(), this.goTo(this.activeIndex, !1)) : this.removeTabsAttributes();
   }
   defineTabsAndPanels() {
     this.tabs = D(this.tabButtonsList), this.panels = D(this.tabPanelsList);
