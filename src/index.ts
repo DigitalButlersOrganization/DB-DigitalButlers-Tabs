@@ -107,11 +107,18 @@ export class Tabs {
 		this.init();
 	}
 
-	init() {
+	init = () => {
+		if (!this.devMode && window.location.protocol === 'http:' && Boolean(window.location.port)) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				'TABS DEV MODE: Use option {devMode: true} for debugging. Read the docs https://www.npmjs.com/package/@digital-butlers/tabs | Используйте опцию {devMode: true} для отладки. Читай документацию https://www.npmjs.com/package/@digital-butlers/tabs',
+			);
+		}
+
 		if (this.devMode) {
 			// eslint-disable-next-line no-console
 			console.warn(
-				`Tabs dev mode enabled! Instance ID: ${this.generatedId}. Read the docs https://www.npmjs.com/package/@digital-butlers/tabs | В табах включен режим разработчика! ID экземпляра: ${this.generatedId}. Читай документацию https://www.npmjs.com/package/@digital-butlers/tabs`,
+				`TABS DEV MODE: Tabs dev mode enabled! Instance ID: ${this.generatedId}. Read the docs https://www.npmjs.com/package/@digital-butlers/tabs | В табах включен режим разработчика! ID экземпляра: ${this.generatedId}. Читай документацию https://www.npmjs.com/package/@digital-butlers/tabs`,
 			);
 		}
 		if (this.tabsWrapper && !this.#destroyed) {
@@ -143,7 +150,7 @@ export class Tabs {
 					}
 				}
 			} else if (this.devMode) {
-				throw new Error('Panels not found | Панели не найдены с контентом для табов не найдены');
+				throw new Error('TABS DEV MODE: Panels not found | Панели с контентом для табов не найдены');
 			}
 			this.#inited = true;
 			if (this.isInMatchMedia) {
@@ -157,18 +164,14 @@ export class Tabs {
 			}
 		} else if (!this.tabsWrapper) {
 			if (this.devMode) {
-				throw new Error(`Tabs wrapper not found | Обертка табов не найдена`);
+				throw new Error(`TABS DEV MODE: Tabs wrapper not found | Обертка табов не найдена`);
 			}
 		} else if (this.#destroyed && this.devMode) {
-			throw new Error(`Tabs already destroyed | Табы уже были дестроены`);
+			throw new Error(`TABS DEV MODE: Tabs already destroyed | Табы уже были дестроены`);
 		}
-	}
+	};
 
-	// secret() {
-	//   return this;
-	// }
-
-	setEqualHeight() {
+	setEqualHeight = () => {
 		if (this.isInMatchMedia) {
 			this.panels.forEach((element) => {
 				element.style.height = 'auto';
@@ -178,8 +181,7 @@ export class Tabs {
 				element.style.height = `${maxHeight}px`;
 			});
 		}
-		// this.secret();
-	}
+	};
 
 	public goTo = (index: number, setFocus: boolean = true) => {
 		// console.log('goto');
@@ -224,27 +226,27 @@ export class Tabs {
 			this.addListenersForTabs();
 		} else if (this.devMode) {
 			throw new Error(
-				`Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')} | Некорректный тип события. Правильные типы: ${Object.values(TriggerEvents).join(', ')}`,
+				`TABS DEV MODE: Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')} | Некорректный тип события. Правильные типы: ${Object.values(TriggerEvents).join(', ')}`,
 			);
 		}
 	};
 
-	runAutoPlay() {
+	runAutoPlay = () => {
 		this.#autoplayTimeout = setTimeout(() => {
 			this.goTo(this.nextIndex as number, false);
 			this.runAutoPlay();
 		}, this.#autoplay.delay);
-	}
+	};
 
-	addListenersForTabs() {
+	addListenersForTabs = () => {
 		this.tabsWrapper.addEventListener(this.triggerEvent, this.clickHandler);
 		window.addEventListener('keydown', this.keydownHandler);
-	}
+	};
 
-	removeListenersForTabs() {
+	removeListenersForTabs = () => {
 		this.tabsWrapper.removeEventListener(this.triggerEvent, this.clickHandler);
 		window.removeEventListener('keydown', this.keydownHandler);
-	}
+	};
 
 	clickHandler = (event: MouseEvent) => {
 		if (this.isInMatchMedia) {
@@ -256,7 +258,7 @@ export class Tabs {
 		}
 	};
 
-	keydownHandler(event: KeyboardEvent) {
+	keydownHandler = (event: KeyboardEvent) => {
 		if (this.isInMatchMedia) {
 			const eventDetails: EventDetailsModel = this.getEventDetails(event);
 			const { targetButton, targetIndex, key } = eventDetails;
@@ -310,7 +312,7 @@ export class Tabs {
 				}
 			}
 		}
-	}
+	};
 
 	protected setUnactiveAll = () => {
 		this.setUnactiveAttributesAll();
@@ -349,7 +351,7 @@ export class Tabs {
 
 	// When a tablist is aria-orientation is set to vertical, only up and down arrow
 	// should function. In all other cases only left and right arrow function.
-	switchTabOnArrowPress(eventDetails: EventDetailsModel) {
+	switchTabOnArrowPress = (eventDetails: EventDetailsModel) => {
 		const { key, targetIndex, event } = eventDetails;
 		event.preventDefault();
 		switch (key) {
@@ -383,10 +385,10 @@ export class Tabs {
 				break;
 			}
 		}
-	}
+	};
 
 	// Deletes a tab and its panel
-	deleteTab(eventDetails: EventDetailsModel) {
+	deleteTab = (eventDetails: EventDetailsModel) => {
 		const { targetButton, targetIndex } = eventDetails;
 		if (targetButton.dataset.deletable === 'true' && targetIndex !== undefined) {
 			this.tabs[targetIndex].remove();
@@ -401,9 +403,9 @@ export class Tabs {
 				}
 			}
 		}
-	}
+	};
 
-	assignTabsAttributes() {
+	assignTabsAttributes = () => {
 		this.tabsWrapper.classList.add(CLASSES.TABS_WRAPPER);
 		this.tabsWrapper.setAttribute('aria-orientation', this.orientation);
 		this.tabButtonsList?.classList.add(CLASSES.TAB_LIST);
@@ -424,9 +426,9 @@ export class Tabs {
 			panel.setAttribute('role', this.#defaultRoles.tabpanel);
 		});
 		this.setUnactiveAll();
-	}
+	};
 
-	removeTabsAttributes() {
+	removeTabsAttributes = () => {
 		this.tabsWrapper.classList.remove(CLASSES.TABS_WRAPPER);
 		this.tabsWrapper.removeAttribute('aria-orientation');
 		this.tabButtonsList?.classList.remove(CLASSES.TAB_LIST);
@@ -462,9 +464,9 @@ export class Tabs {
 				this.panels[index].removeAttribute('style');
 			}
 		});
-	}
+	};
 
-	getEventDetails(event: KeyboardEvent | MouseEvent): EventDetailsModel {
+	getEventDetails = (event: KeyboardEvent | MouseEvent): EventDetailsModel => {
 		const key = event instanceof KeyboardEvent ? event.key : undefined;
 		const target = event.target as HTMLElement;
 		const targetTab = target.closest(this.#defaultSelectors.tab) as HTMLElement;
@@ -476,13 +478,13 @@ export class Tabs {
 			key,
 			event,
 		};
-	}
+	};
 
-	updateProperties(): void {
+	updateProperties = (): void => {
 		this.lastIndex = this.panels.length - 1;
 		this.nextIndex = this.activeIndex >= this.lastIndex ? 0 : this.activeIndex + 1;
 		this.prevIndex = this.activeIndex - 1 < 0 ? this.lastIndex : this.activeIndex - 1;
-	}
+	};
 
 	updateAttributes = (): void => {
 		this.checkMatchMediaRule();
@@ -490,14 +492,20 @@ export class Tabs {
 			this.assignTabsAttributes();
 			this.goTo(this.activeIndex, false);
 		} else {
+			if (this.devMode) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					`TABS DEV MODE: Tabs is disabled due to media query not matching. Media query rule used: ${this.matchMediaRule} | Табы отключены из-за несовпадения медиа-запроса. Используется медиа-запрос: ${this.matchMediaRule}`,
+				);
+			}
 			this.removeTabsAttributes();
 		}
 	};
 
-	defineTabsAndPanels() {
+	defineTabsAndPanels = () => {
 		this.tabs = getChildrenArray(this.tabButtonsList as HTMLElement);
 		this.panels = getChildrenArray(this.tabPanelsList as HTMLElement);
-	}
+	};
 
 	private checkMatchMediaRule = () => {
 		this.isInMatchMedia = !this.matchMediaRule || window.matchMedia(this.matchMediaRule).matches;
@@ -513,6 +521,11 @@ export class Tabs {
 		this.removeTabsAttributes();
 		this.removeListenersForTabs();
 		window.removeEventListener('resize', this.setEqualHeight);
+		window.removeEventListener('resize', this.updateAttributes);
+		if (this.devMode) {
+			// eslint-disable-next-line no-console
+			console.warn(`TABS DEV MODE: Tabs destroyed using the destroy method | Табы уничтожены c помощью метода destroy`);
+		}
 		this.#destroyed = true;
 	};
 }
