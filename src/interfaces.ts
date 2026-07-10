@@ -17,11 +17,9 @@ export interface EventsModel {
 	afterInit?: (tabs: Tabs) => void;
 }
 
-// eslint-disable-next-line no-shadow
-export enum TriggerEvents {
-	click = 'click',
-	mouseover = 'mouseover',
-}
+export type TriggerEvent = 'click' | 'mouseover';
+
+export const TRIGGER_EVENTS: readonly TriggerEvent[] = ['click', 'mouseover'];
 
 export interface TabsConfigModel {
 	tabpanelsListSelector?: string;
@@ -30,8 +28,8 @@ export interface TabsConfigModel {
 	initialTab?: number;
 	orientation?: OrientationType;
 	equalHeight?: boolean;
-	autoplay?: AutoPlayModel;
-	triggerEvent?: TriggerEvents;
+	autoplay?: AutoPlayModel; 
+	triggerEvent?: TriggerEvent;
 	on?: EventsModel;
 	matchMediaRule?: string;
 	devMode?: boolean;

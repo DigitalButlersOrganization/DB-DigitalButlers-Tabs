@@ -10,7 +10,8 @@ import {
 	GoToNextPreviousProperties,
 	OrientationType,
 	TabsConfigModel,
-	TriggerEvents,
+	TriggerEvent,
+	TRIGGER_EVENTS,
 } from './interfaces';
 
 export class Tabs {
@@ -22,7 +23,7 @@ export class Tabs {
 	lastIndex: number | undefined;
 	#deletableTabs: boolean;
 	orientation: OrientationType;
-	triggerEvent: TriggerEvents;
+	triggerEvent: TriggerEvent;
 	#autoplay: AutoPlayModel;
 	#autoplayTimeout: number;
 	#listenersAdded: boolean;
@@ -59,7 +60,7 @@ export class Tabs {
 			initialTab = 0,
 			equalHeight = false,
 			orientation = 'horizontal',
-			triggerEvent = TriggerEvents.click,
+			triggerEvent = 'click',
 			autoplay = {
 				delay: 0,
 			},
@@ -219,14 +220,14 @@ export class Tabs {
 		clearTimeout(this.#autoplayTimeout);
 	};
 
-	public changeTriggerEvent = (eventName: TriggerEvents) => {
-		if (eventName in TriggerEvents) {
+	public changeTriggerEvent = (eventName: TriggerEvent) => {
+		if (TRIGGER_EVENTS.includes(eventName)) {
 			this.removeListenersForTabs();
 			this.triggerEvent = eventName;
 			this.addListenersForTabs();
 		} else if (this.devMode) {
 			throw new Error(
-				`TABS DEV MODE: Icorrect type of event. Correct types are: ${Object.values(TriggerEvents).join(', ')} | Некорректный тип события. Правильные типы: ${Object.values(TriggerEvents).join(', ')}`,
+				`TABS DEV MODE: Icorrect type of event. Correct types are: ${TRIGGER_EVENTS.join(', ')} | Некорректный тип события. Правильные типы: ${TRIGGER_EVENTS.join(', ')}`,
 			);
 		}
 	};
@@ -360,7 +361,7 @@ export class Tabs {
 				if (targetIndex !== undefined) {
 					const nextIndex = targetIndex - 1 < 0 ? Number(this.lastIndex) : targetIndex - 1;
 					// this.focusTab(nextIndex);
-					if (this.triggerEvent === TriggerEvents.mouseover) {
+					if (this.triggerEvent === 'mouseover') {
 						this.goTo(nextIndex);
 					} else {
 						this.focusTab(nextIndex);
@@ -373,7 +374,7 @@ export class Tabs {
 				if (targetIndex !== undefined) {
 					const nextIndex = targetIndex >= Number(this.lastIndex) ? 0 : targetIndex + 1;
 					// this.focusTab(nextIndex);
-					if (this.triggerEvent === TriggerEvents.mouseover) {
+					if (this.triggerEvent === 'mouseover') {
 						this.goTo(nextIndex);
 					} else {
 						this.focusTab(nextIndex);
