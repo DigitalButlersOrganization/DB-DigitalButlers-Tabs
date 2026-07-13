@@ -8,19 +8,18 @@ export interface EventsModel {
     beforeInit?: (tabs: Tabs) => void;
     afterInit?: (tabs: Tabs) => void;
 }
-export declare enum TriggerEvents {
-    click = "click",
-    mouseover = "mouseover"
-}
+export type TriggerEvent = 'click' | 'mouseover';
+export declare const TRIGGER_EVENTS: readonly TriggerEvent[];
 export interface TabsConfigModel {
     tabpanelsListSelector?: string;
     tabbuttonsListSelector?: string;
     deletableTabs?: boolean;
+    /** Tab index to activate on init. Use `-1` to start with no active tab. */
     initialTab?: number;
     orientation?: OrientationType;
     equalHeight?: boolean;
     autoplay?: AutoPlayModel;
-    triggerEvent?: TriggerEvents;
+    triggerEvent?: TriggerEvent;
     on?: EventsModel;
     matchMediaRule?: string;
     devMode?: boolean;
@@ -35,6 +34,7 @@ export interface EventDetailsModel {
 export interface TabsModel {
     tabpanelsListSelector: string;
     tabbuttonsListSelector: string;
+    /** Current active tab index. `-1` means no tab is active. */
     activeIndex: number;
     nextIndex: number | undefined;
     prevIndex: number | undefined;

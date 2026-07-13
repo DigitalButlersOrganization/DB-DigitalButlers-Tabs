@@ -17,7 +17,7 @@ import {
 export class Tabs {
 	#tabpanelsListSelector: string;
 	#tabbuttonsListSelector: string;
-	activeIndex: number;
+	activeIndex: number; // -1 means no tab is active
 	nextIndex: number | undefined;
 	prevIndex: number | undefined;
 	lastIndex: number | undefined;
@@ -184,22 +184,34 @@ export class Tabs {
 		}
 	};
 
+	#isValidTabIndex = (index: number): boolean =>
+		Number.isFinite(index) && index >= 0 && index < this.panels.length;
+
 	public goTo = (index: number, setFocus: boolean = true) => {
-		// console.log('goto');
-		if (this.#inited) {
-			this.activeIndex = index;
-			this.updateProperties();
-			this.setUnactiveAll();
+		if (!this.#inited) {
+			return;
+		}
+
+		const isValid = this.#isValidTabIndex(index);
+		this.activeIndex = isValid ? index : -1;
+		this.updateProperties();
+		this.setUnactiveAll();
+
+		if (isValid) {
 			this.setActiveAttributes(index);
 			this.setActiveClasses(index);
-			// Set focus when required
 			if (setFocus) {
 				this.focusTab(index);
 			}
-			if (this.on.tabChange) {
-				this.on.tabChange(this);
-			}
 		}
+
+		if (this.on.tabChange) {
+			this.on.tabChange(this);
+		}
+	};
+
+	public closeAll = (setFocus: boolean = false) => {
+		this.goTo(-1, setFocus);
 	};
 
 	public goToNext = (properties: GoToNextPreviousProperties = {}) => {
@@ -334,14 +346,20 @@ export class Tabs {
 	};
 
 	protected setActiveAttributes = (index: number) => {
-		this.tabs[index]?.setAttribute('tabindex', '0');
-		this.tabs[index]?.setAttribute('aria-selected', 'true');
+		if (!this.tabs[index] || !this.panels[index]) {
+			return;
+		}
+		this.tabs[index].setAttribute('tabindex', '0');
+		this.tabs[index].setAttribute('aria-selected', 'true');
 		this.panels[index].removeAttribute('inert');
 	};
 
 	protected setActiveClasses = (index: number) => {
-		this.tabs[index]?.classList.remove(CLASSES.UNACTIVE);
-		this.tabs[index]?.classList.add(CLASSES.ACTIVE);
+		if (!this.tabs[index] || !this.panels[index]) {
+			return;
+		}
+		this.tabs[index].classList.remove(CLASSES.UNACTIVE);
+		this.tabs[index].classList.add(CLASSES.ACTIVE);
 		this.panels[index].classList.remove(CLASSES.UNACTIVE);
 		this.panels[index].classList.add(CLASSES.ACTIVE);
 	};
